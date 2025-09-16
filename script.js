@@ -3,10 +3,12 @@
 class BuildingMapApp {
     constructor() {
         this.map = null;
+        this.currentRegion = 'hyderabad'; // Default region
         this.currentBuilding = null;
         this.currentFloor = null;
         this.currentRoom = null;
         this.markers = [];
+        this.sidebarCollapsed = false;
         
         this.init();
     }
@@ -14,12 +16,14 @@ class BuildingMapApp {
     init() {
         this.initMap();
         this.initEventListeners();
-        this.loadBuildings();
+        this.loadRegion(this.currentRegion);
+        this.updateRegionStats();
     }
     
     initMap() {
-        // Initialize the map centered on Hyderabad, India (Microsoft campus area)
-        this.map = L.map('map').setView([17.4241, 78.3872], 16);
+        // Initialize the map centered on the default region
+        const regionData = regionsData[this.currentRegion];
+        this.map = L.map('map').setView(regionData.center, regionData.zoom);
         
         // Add tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -29,6 +33,19 @@ class BuildingMapApp {
     }
     
     initEventListeners() {
+        // Region selector listeners
+        document.querySelectorAll('.region-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const region = e.currentTarget.dataset.region;
+                this.switchRegion(region);
+            });
+        });
+        
+        // Sidebar toggle
+        document.getElementById('sidebarToggle').addEventListener('click', () => {
+            this.toggleSidebar();
+        });
+        
         // Modal close buttons
         document.querySelectorAll('.close').forEach(closeBtn => {
             closeBtn.addEventListener('click', (e) => {
@@ -47,9 +64,7 @@ class BuildingMapApp {
         
         // Back to building button
         document.getElementById('backToBuilding').addEventListener('click', () => {
-            // Close the floor modal first
             this.closeModal(document.getElementById('floorModal'));
-            // Then show the building details
             this.showBuildingDetails(this.currentBuilding);
         });
         
@@ -75,10 +90,82 @@ class BuildingMapApp {
         });
     }
     
-    loadBuildings() {
-        buildingsData.forEach(building => {
+    switchRegion(regionKey) {
+        if (regionKey === this.currentRegion) return;
+        
+        // Update UI
+        document.querySelectorAll('.region-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        document.querySelector(`[data-region="${regionKey}"]`).classList.add('active');
+        
+        // Update current region
+        this.currentRegion = regionKey;
+        
+        // Load new region
+        this.loadRegion(regionKey);
+        this.updateRegionStats();
+        
+        // Close any open modals
+        this.closeAllModals();
+    }
+    
+    loadRegion(regionKey) {
+        // Clear existing markers
+        this.clearMarkers();
+        
+        // Get region data
+        const regionData = regionsData[regionKey];
+        
+        // Update map view
+        this.map.setView(regionData.center, regionData.zoom);
+        
+        // Load buildings for this region
+        const regionBuildings = buildingsData.filter(building => building.region === regionKey);
+        regionBuildings.forEach(building => {
             this.addBuildingMarker(building);
         });
+    }
+    
+    clearMarkers() {
+        this.markers.forEach(marker => {
+            this.map.removeLayer(marker);
+        });
+        this.markers = [];
+    }
+    
+    toggleSidebar() {
+        const sidebar = document.getElementById('regionSidebar');
+        const toggle = document.getElementById('sidebarToggle');
+        const toggleIcon = toggle.querySelector('.toggle-icon');
+        
+        this.sidebarCollapsed = !this.sidebarCollapsed;
+        
+        if (this.sidebarCollapsed) {
+            sidebar.classList.add('collapsed');
+            toggleIcon.textContent = '▶';
+        } else {
+            sidebar.classList.remove('collapsed');
+            toggleIcon.textContent = '◀';
+        }
+    }
+    
+    updateRegionStats() {
+        const regionBuildings = buildingsData.filter(building => building.region === this.currentRegion);
+        
+        let totalRooms = 0;
+        let availableRooms = 0;
+        
+        regionBuildings.forEach(building => {
+            building.floors.forEach(floor => {
+                totalRooms += floor.rooms.length;
+                availableRooms += floor.rooms.filter(room => room.status === 'available').length;
+            });
+        });
+        
+        document.getElementById('statBuildings').textContent = regionBuildings.length;
+        document.getElementById('statRooms').textContent = totalRooms;
+        document.getElementById('statAvailable').textContent = availableRooms;
     }
     
     addBuildingMarker(building) {
@@ -277,10 +364,13 @@ class BuildingMapApp {
         });
     }
     
-    // Utility method to get building statistics
+    // Utility method to get building statistics for current region
     getBuildingStats() {
+        const regionBuildings = buildingsData.filter(building => building.region === this.currentRegion);
+        
         const stats = {
-            totalBuildings: buildingsData.length,
+            region: this.currentRegion,
+            totalBuildings: regionBuildings.length,
             totalFloors: 0,
             totalRooms: 0,
             availableRooms: 0,
@@ -289,7 +379,7 @@ class BuildingMapApp {
             totalProblems: 0
         };
         
-        buildingsData.forEach(building => {
+        regionBuildings.forEach(building => {
             stats.totalFloors += building.floors.length;
             
             building.floors.forEach(floor => {
@@ -316,11 +406,12 @@ class BuildingMapApp {
         return stats;
     }
     
-    // Method to search rooms by criteria
+    // Method to search rooms by criteria in current region
     searchRooms(criteria) {
         const results = [];
+        const regionBuildings = buildingsData.filter(building => building.region === this.currentRegion);
         
-        buildingsData.forEach(building => {
+        regionBuildings.forEach(building => {
             building.floors.forEach(floor => {
                 floor.rooms.forEach(room => {
                     let matches = true;
@@ -359,10 +450,11 @@ class BuildingMapApp {
         return results;
     }
     
-    // Method to highlight buildings with issues
+    // Method to highlight buildings with issues in current region
     highlightProblematicBuildings() {
         this.markers.forEach(marker => {
             const building = buildingsData.find(b => 
+                b.region === this.currentRegion &&
                 b.coordinates[0] === marker.getLatLng().lat && 
                 b.coordinates[1] === marker.getLatLng().lng);
             
@@ -506,7 +598,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000);
     
     // Log statistics to console for debugging
-    console.log('Building Statistics:', app.getBuildingStats());
+    console.log('Current Region Statistics:', app.getBuildingStats());
+    
+    // Log all available regions
+    console.log('Available Regions:', Object.keys(regionsData));
 });
 
 // Global function to be called from popup buttons

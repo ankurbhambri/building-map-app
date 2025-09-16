@@ -1,11 +1,45 @@
 // Sample data for the building map application
 
+// Region configurations
+const regionsData = {
+    hyderabad: {
+        name: "Hyderabad",
+        country: "India",
+        center: [17.4241, 78.3872],
+        zoom: 16,
+        description: "Microsoft India Development Center - Hyderabad"
+    },
+    bangalore: {
+        name: "Bangalore",
+        country: "India", 
+        center: [12.9716, 77.5946],
+        zoom: 16,
+        description: "Microsoft India Development Center - Bangalore"
+    },
+    noida: {
+        name: "Noida",
+        country: "India",
+        center: [28.5355, 77.3910],
+        zoom: 16,
+        description: "Microsoft India Development Center - Noida"
+    },
+    redmond: {
+        name: "Redmond",
+        country: "USA",
+        center: [47.6397, -122.1281],
+        zoom: 15,
+        description: "Microsoft Headquarters Campus - Redmond"
+    }
+};
+
 const buildingsData = [
+    // HYDERABAD CAMPUS
     {
         id: 1,
+        region: "hyderabad",
         name: "Microsoft Hyderabad Campus - Building B1",
         address: "Building B1, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
-        coordinates: [17.4241, 78.3872], // Main building coordinates
+        coordinates: [17.4241, 78.3872],
         floors: [
             {
                 id: 1,
@@ -36,6 +70,46 @@ const buildingsData = [
                         status: "available",
                         equipment: ["Smart TV", "Video Conference"],
                         problems: []
+                    },
+                    {
+                        id: 104,
+                        name: "Reception Desk",
+                        capacity: 4,
+                        status: "available",
+                        equipment: ["Reception Counter", "Visitor Management System"],
+                        problems: []
+                    },
+                    {
+                        id: 105,
+                        name: "Main Cafeteria",
+                        capacity: 200,
+                        status: "available",
+                        equipment: ["Kitchen", "Dining Tables", "Coffee Machines", "Vending Machines"],
+                        problems: []
+                    },
+                    {
+                        id: 106,
+                        name: "Huddle Room Alpha",
+                        capacity: 4,
+                        status: "available",
+                        equipment: ["Smart Display", "Wireless Sharing"],
+                        problems: []
+                    },
+                    {
+                        id: 107,
+                        name: "Phone Booth 1",
+                        capacity: 1,
+                        status: "available",
+                        equipment: ["Soundproofing", "Phone", "Small Desk"],
+                        problems: []
+                    },
+                    {
+                        id: 108,
+                        name: "Phone Booth 2",
+                        capacity: 1,
+                        status: "occupied",
+                        equipment: ["Soundproofing", "Phone", "Small Desk"],
+                        problems: []
                     }
                 ]
             },
@@ -43,7 +117,7 @@ const buildingsData = [
                 id: 2,
                 name: "First Floor",
                 number: 1,
-                description: "Executive Offices, Client Meeting Rooms",
+                description: "Executive Offices, Client Meeting Rooms, Innovation Labs",
                 rooms: [
                     {
                         id: 201,
@@ -60,16 +134,90 @@ const buildingsData = [
                         status: "available",
                         equipment: ["Smart TV", "Conference Phone", "Digital Whiteboard"],
                         problems: []
+                    },
+                    {
+                        id: 203,
+                        name: "Innovation Lab - AI",
+                        capacity: 25,
+                        status: "available",
+                        equipment: ["High-Performance Workstations", "AI Hardware", "Multiple Monitors"],
+                        problems: []
+                    },
+                    {
+                        id: 204,
+                        name: "Executive Boardroom",
+                        capacity: 16,
+                        status: "available",
+                        equipment: ["4K Video Wall", "Premium Audio", "Catering Setup"],
+                        problems: []
+                    },
+                    {
+                        id: 205,
+                        name: "Wellness Room",
+                        capacity: 8,
+                        status: "available",
+                        equipment: ["Meditation Cushions", "Yoga Mats", "Relaxation Lighting"],
+                        problems: []
+                    },
+                    {
+                        id: 206,
+                        name: "Collaboration Space",
+                        capacity: 12,
+                        status: "occupied",
+                        equipment: ["Moveable Furniture", "Writable Walls", "Standing Desks"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 3,
+                name: "Second Floor",
+                number: 2,
+                description: "Development Teams, Open Workspaces",
+                rooms: [
+                    {
+                        id: 301,
+                        name: "Dev Team Room Alpha",
+                        capacity: 30,
+                        status: "available",
+                        equipment: ["Development Workstations", "Large Monitors", "Code Review Displays"],
+                        problems: []
+                    },
+                    {
+                        id: 302,
+                        name: "Dev Team Room Beta",
+                        capacity: 30,
+                        status: "occupied",
+                        equipment: ["Development Workstations", "Large Monitors", "Code Review Displays"],
+                        problems: []
+                    },
+                    {
+                        id: 303,
+                        name: "Game Development Lab",
+                        capacity: 20,
+                        status: "available",
+                        equipment: ["Gaming Rigs", "VR Setup", "Game Testing Equipment"],
+                        problems: []
+                    },
+                    {
+                        id: 304,
+                        name: "Printer & Copy Center",
+                        capacity: 5,
+                        status: "available",
+                        equipment: ["High-Speed Printers", "Scanners", "Paper Supplies"],
+                        problems: []
                     }
                 ]
             }
         ]
     },
+    // Additional Hyderabad buildings...
     {
         id: 2,
+        region: "hyderabad",
         name: "Microsoft Hyderabad Campus - Building B2",
         address: "Building B2, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
-        coordinates: [17.4245, 78.3875], // Slightly offset coordinates for B2
+        coordinates: [17.4245, 78.3875],
         floors: [
             {
                 id: 1,
@@ -107,218 +255,80 @@ const buildingsData = [
                         status: "available",
                         equipment: ["Smart TV", "Wireless presentation"],
                         problems: []
-                    }
-                ]
-            },
-            {
-                id: 2,
-                name: "First Floor",
-                number: 1,
-                description: "Product Teams, Innovation Labs",
-                rooms: [
-                    {
-                        id: 201,
-                        name: "Ravi Innovation Lab",
-                        capacity: 30,
-                        status: "available",
-                        equipment: ["Multiple Monitors", "Development Hardware", "Whiteboard"],
-                        problems: []
-                    },
-                    {
-                        id: 202,
-                        name: "Sutlej Collaboration Room",
-                        capacity: 12,
-                        status: "occupied",
-                        equipment: ["Interactive Display", "Video Conference"],
-                        problems: []
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        id: 3,
-        name: "Microsoft Hyderabad Campus - Building B3",
-        address: "Building B3, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
-        coordinates: [17.4238, 78.3875], // Offset coordinates for B3
-        floors: [
-            {
-                id: 1,
-                name: "Ground Floor",
-                number: 0,
-                description: "Training Centers, Learning Spaces",
-                rooms: [
-                    {
-                        id: 101,
-                        name: "Indus Training Center",
-                        capacity: 80,
-                        status: "available",
-                        equipment: ["Multiple Projectors", "Sound System", "Interactive Whiteboards"],
-                        problems: []
-                    },
-                    {
-                        id: 102,
-                        name: "Beas Learning Room",
-                        capacity: 25,
-                        status: "available",
-                        equipment: ["Smart TV", "Video Conference", "Presentation Equipment"],
-                        problems: []
-                    },
-                    {
-                        id: 103,
-                        name: "Jhelum Workshop Room",
-                        capacity: 15,
-                        status: "occupied",
-                        equipment: ["Workshop Tools", "Presentation Screen"],
-                        problems: []
-                    }
-                ]
-            },
-            {
-                id: 2,
-                name: "First Floor",
-                number: 1,
-                description: "Support Teams, IT Services",
-                rooms: [
-                    {
-                        id: 201,
-                        name: "Tapti Support Center",
-                        capacity: 20,
-                        status: "available",
-                        equipment: ["Multiple Screens", "Communication Systems"],
-                        problems: []
-                    },
-                    {
-                        id: 202,
-                        name: "Mahanadi IT Room",
-                        capacity: 10,
-                        status: "available",
-                        equipment: ["Server Access", "Monitoring Equipment"],
-                        problems: []
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        id: 4,
-        name: "Microsoft Hyderabad Campus - Building B4",
-        address: "Building B4, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
-        coordinates: [17.4244, 78.3869], // Offset coordinates for B4
-        floors: [
-            {
-                id: 1,
-                name: "Ground Floor",
-                number: 0,
-                description: "Recreation, Wellness, Secondary Cafeteria",
-                rooms: [
-                    {
-                        id: 101,
-                        name: "Ganga Wellness Center",
-                        capacity: 40,
-                        status: "available",
-                        equipment: ["Fitness Equipment", "Relaxation Area"],
-                        problems: []
-                    },
-                    {
-                        id: 102,
-                        name: "Cauvery Recreation Room",
-                        capacity: 20,
-                        status: "available",
-                        equipment: ["Gaming Consoles", "Entertainment Systems"],
-                        problems: []
-                    },
-                    {
-                        id: 103,
-                        name: "Brahmaputra Cafeteria",
-                        capacity: 60,
-                        status: "available",
-                        equipment: ["Kitchen Facilities", "Dining Area"],
-                        problems: []
-                    }
-                ]
-            },
-            {
-                id: 2,
-                name: "First Floor",
-                number: 1,
-                description: "Event Spaces, Large Meeting Halls",
-                rooms: [
-                    {
-                        id: 201,
-                        name: "Nerbadda Event Hall",
-                        capacity: 150,
-                        status: "available",
-                        equipment: ["Stage Setup", "Professional Sound System", "Lighting", "Video Walls"],
-                        problems: []
-                    },
-                    {
-                        id: 202,
-                        name: "Pennar Auditorium",
-                        capacity: 200,
-                        status: "available",
-                        equipment: ["Theater Seating", "Professional AV Setup", "Live Streaming"],
-                        problems: []
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        id: 5,
-        name: "Building B1",
-        address: "123 Innovation Drive, Silicon Valley, CA",
-        coordinates: [37.7749, -122.4194], // San Francisco coordinates
-        floors: [
-            {
-                id: 1,
-                name: "Ground Floor",
-                number: 0,
-                description: "Reception, Lobby, Cafeteria",
-                rooms: [
-                    {
-                        id: 101,
-                        name: "Main Conference",
-                        capacity: 50,
-                        status: "available",
-                        equipment: ["Projector", "Video Conference", "Whiteboard", "Sound System"],
-                        problems: []
-                    },
-                    {
-                        id: 102,
-                        name: "Meeting Room A",
-                        capacity: 8,
-                        status: "occupied",
-                        equipment: ["TV Screen", "Conference Phone"],
-                        problems: []
-                    },
-                    {
-                        id: 103,
-                        name: "Meeting Room B",
-                        capacity: 6,
-                        status: "maintenance",
-                        equipment: ["Projector", "Whiteboard"],
-                        problems: [
-                            {
-                                type: "Equipment",
-                                description: "Projector not working",
-                                priority: "High",
-                                reportedAt: "2024-01-15"
-                            },
-                            {
-                                type: "Facility",
-                                description: "Air conditioning too loud",
-                                priority: "Medium",
-                                reportedAt: "2024-01-14"
-                            }
-                        ]
                     },
                     {
                         id: 104,
-                        name: "Training Room",
+                        name: "Micro Kitchen",
+                        capacity: 10,
+                        status: "available",
+                        equipment: ["Coffee Machine", "Microwave", "Refrigerator", "Snack Station"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+
+    // BANGALORE CAMPUS
+    {
+        id: 11,
+        region: "bangalore",
+        name: "Microsoft Bangalore - Embassy Golf Links",
+        address: "Embassy Golf Links Business Park, Intermediate Ring Road, Bangalore, Karnataka 560071, India",
+        coordinates: [12.9716, 77.5946],
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Reception, Main Lobby, Visitor Areas",
+                rooms: [
+                    {
+                        id: 1101,
+                        name: "Bengaluru Innovation Hub",
+                        capacity: 80,
+                        status: "available",
+                        equipment: ["Interactive Displays", "Collaboration Tools", "Innovation Equipment"],
+                        problems: []
+                    },
+                    {
+                        id: 1102,
+                        name: "Mysore Conference Hall",
+                        capacity: 60,
+                        status: "available",
+                        equipment: ["Professional AV", "Video Conference", "Stage Setup"],
+                        problems: []
+                    },
+                    {
+                        id: 1103,
+                        name: "Hampi Meeting Room",
+                        capacity: 12,
+                        status: "occupied",
+                        equipment: ["Smart Board", "Video Conference"],
+                        problems: []
+                    },
+                    {
+                        id: 1104,
+                        name: "Coorg Huddle Space",
+                        capacity: 6,
+                        status: "available",
+                        equipment: ["Wireless Display", "Comfortable Seating"],
+                        problems: []
+                    },
+                    {
+                        id: 1105,
+                        name: "Garden City Cafeteria",
+                        capacity: 150,
+                        status: "available",
+                        equipment: ["Full Kitchen", "Outdoor Seating", "Coffee Bar"],
+                        problems: []
+                    },
+                    {
+                        id: 1106,
+                        name: "Wellness Center",
                         capacity: 20,
                         status: "available",
-                        equipment: ["Interactive Whiteboard", "Laptops", "Projector"],
+                        equipment: ["Fitness Equipment", "Meditation Area", "Massage Chairs"],
                         problems: []
                     }
                 ]
@@ -327,114 +337,38 @@ const buildingsData = [
                 id: 2,
                 name: "First Floor",
                 number: 1,
-                description: "Engineering Teams, Development",
+                description: "Engineering Teams, Cloud Services",
                 rooms: [
                     {
-                        id: 201,
-                        name: "Dev Team Room",
-                        capacity: 12,
+                        id: 1201,
+                        name: "Azure Team Room",
+                        capacity: 40,
                         status: "available",
-                        equipment: ["Large Monitor", "Whiteboard", "Coffee Machine"],
+                        equipment: ["Cloud Workstations", "Multiple Monitors", "Server Access"],
                         problems: []
                     },
                     {
-                        id: 202,
-                        name: "Standup Room",
-                        capacity: 15,
-                        status: "occupied",
-                        equipment: ["Standing Desks", "Monitor"],
-                        problems: []
-                    },
-                    {
-                        id: 203,
-                        name: "Code Review",
-                        capacity: 6,
-                        status: "maintenance",
-                        equipment: ["Multiple Monitors", "Ergonomic Chairs"],
-                        problems: [
-                            {
-                                type: "Network",
-                                description: "WiFi connectivity issues",
-                                priority: "High",
-                                reportedAt: "2024-01-16"
-                            }
-                        ]
-                    },
-                    {
-                        id: 204,
-                        name: "Phone Booth 1",
-                        capacity: 1,
-                        status: "available",
-                        equipment: ["Phone", "Soundproofing"],
-                        problems: []
-                    },
-                    {
-                        id: 205,
-                        name: "Phone Booth 2",
-                        capacity: 1,
-                        status: "available",
-                        equipment: ["Phone", "Soundproofing"],
-                        problems: []
-                    },
-                    {
-                        id: 206,
-                        name: "Innovation Lab",
-                        capacity: 10,
-                        status: "available",
-                        equipment: ["3D Printer", "VR Setup", "Prototyping Tools"],
-                        problems: []
-                    }
-                ]
-            },
-            {
-                id: 3,
-                name: "Second Floor",
-                number: 2,
-                description: "Management, HR, Finance",
-                rooms: [
-                    {
-                        id: 301,
-                        name: "Executive Boardroom",
+                        id: 1202,
+                        name: "Udupi Collaboration Room",
                         capacity: 16,
+                        status: "available",
+                        equipment: ["Interactive Whiteboard", "Video Conference"],
+                        problems: []
+                    },
+                    {
+                        id: 1203,
+                        name: "Mangalore Design Studio",
+                        capacity: 25,
                         status: "occupied",
-                        equipment: ["4K Display", "Premium Audio", "Video Conference", "Catering Setup"],
+                        equipment: ["Design Workstations", "Color-Accurate Monitors", "Drawing Tablets"],
                         problems: []
                     },
                     {
-                        id: 302,
-                        name: "HR Interview Room",
-                        capacity: 4,
-                        status: "available",
-                        equipment: ["Camera", "Microphone", "Comfortable Seating"],
-                        problems: []
-                    },
-                    {
-                        id: 303,
-                        name: "Finance Meeting",
+                        id: 1204,
+                        name: "Think Tank",
                         capacity: 8,
-                        status: "maintenance",
-                        equipment: ["Secure Network", "Printer", "Shredder"],
-                        problems: [
-                            {
-                                type: "Security",
-                                description: "Door lock malfunction",
-                                priority: "Critical",
-                                reportedAt: "2024-01-16"
-                            },
-                            {
-                                type: "Equipment",
-                                description: "Printer out of toner",
-                                priority: "Low",
-                                reportedAt: "2024-01-15"
-                            }
-                        ]
-                    },
-                    {
-                        id: 304,
-                        name: "Strategy Room",
-                        capacity: 12,
                         status: "available",
-                        equipment: ["Digital Whiteboard", "Premium Furniture", "Video Wall"],
+                        equipment: ["Brainstorming Tools", "Writable Surfaces", "Creative Supplies"],
                         problems: []
                     }
                 ]
@@ -442,160 +376,381 @@ const buildingsData = [
         ]
     },
     {
-        id: 2,
-        name: "Building B2",
-        address: "456 Design Street, San Francisco, CA",
-        coordinates: [37.7849, -122.4094],
+        id: 12,
+        region: "bangalore",
+        name: "Microsoft Bangalore - RMZ Ecoworld",
+        address: "RMZ Ecoworld, Sarjapur Road, Bangalore, Karnataka 560103, India",
+        coordinates: [12.9698, 77.6015],
         floors: [
             {
-                id: 4,
+                id: 1,
                 name: "Ground Floor",
                 number: 0,
-                description: "Design Studios, Art Gallery",
+                description: "Customer Experience Center, Training Facilities",
                 rooms: [
                     {
-                        id: 401,
-                        name: "Main Studio",
-                        capacity: 25,
+                        id: 1301,
+                        name: "Customer Experience Center",
+                        capacity: 100,
                         status: "available",
-                        equipment: ["Design Tablets", "Large Displays", "Art Supplies", "Scanner"],
+                        equipment: ["Demo Stations", "Interactive Displays", "Product Showcases"],
                         problems: []
                     },
                     {
-                        id: 402,
-                        name: "Photo Studio",
-                        capacity: 8,
+                        id: 1302,
+                        name: "Training Center Alpha",
+                        capacity: 50,
+                        status: "available",
+                        equipment: ["Training Workstations", "Projectors", "Learning Management"],
+                        problems: []
+                    },
+                    {
+                        id: 1303,
+                        name: "Hassan Meeting Room",
+                        capacity: 14,
                         status: "maintenance",
-                        equipment: ["Professional Lighting", "Cameras", "Backdrops"],
+                        equipment: ["Video Conference", "Presentation Equipment"],
                         problems: [
                             {
-                                type: "Equipment",
-                                description: "Main camera lens damaged",
+                                type: "Network",
+                                description: "Internet connectivity issues",
                                 priority: "High",
                                 reportedAt: "2024-01-16"
                             }
                         ]
-                    },
+                    }
+                ]
+            }
+        ]
+    },
+
+    // NOIDA CAMPUS
+    {
+        id: 21,
+        region: "noida",
+        name: "Microsoft Noida - Advant Navis",
+        address: "Advant Navis Business Park, Sector 142, Noida, Uttar Pradesh 201305, India",
+        coordinates: [28.5355, 77.3910],
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Reception, Customer Centers, Support Teams",
+                rooms: [
                     {
-                        id: 403,
-                        name: "Video Editing",
-                        capacity: 6,
-                        status: "occupied",
-                        equipment: ["High-end Workstations", "Color Monitors", "Audio Equipment"],
+                        id: 2101,
+                        name: "Yamuna Auditorium",
+                        capacity: 200,
+                        status: "available",
+                        equipment: ["Professional Stage", "Sound System", "Live Streaming", "Theater Seating"],
                         problems: []
                     },
                     {
-                        id: 404,
-                        name: "Client Presentation",
-                        capacity: 10,
+                        id: 2102,
+                        name: "Ganga Conference Hall",
+                        capacity: 80,
                         status: "available",
-                        equipment: ["Premium Display", "Mood Lighting", "Comfortable Seating"],
+                        equipment: ["Video Walls", "Premium Audio", "Conference Setup"],
+                        problems: []
+                    },
+                    {
+                        id: 2103,
+                        name: "Agra Meeting Room",
+                        capacity: 12,
+                        status: "occupied",
+                        equipment: ["Smart Board", "Video Conference"],
+                        problems: []
+                    },
+                    {
+                        id: 2104,
+                        name: "Lucknow Huddle Room",
+                        capacity: 6,
+                        status: "available",
+                        equipment: ["Wireless Display", "Comfortable Seating"],
+                        problems: []
+                    },
+                    {
+                        id: 2105,
+                        name: "Support Center NOC",
+                        capacity: 30,
+                        status: "occupied",
+                        equipment: ["Monitoring Displays", "Communication Systems", "24/7 Workstations"],
+                        problems: []
+                    },
+                    {
+                        id: 2106,
+                        name: "Employee Lounge",
+                        capacity: 40,
+                        status: "available",
+                        equipment: ["Comfortable Seating", "Gaming Area", "Coffee Station"],
                         problems: []
                     }
                 ]
             },
             {
-                id: 5,
+                id: 2,
                 name: "First Floor",
                 number: 1,
-                description: "Marketing, Content Creation",
+                description: "Engineering, Sales, Marketing Teams",
                 rooms: [
                     {
-                        id: 501,
-                        name: "Content Studio",
-                        capacity: 15,
+                        id: 2201,
+                        name: "Engineering Lab",
+                        capacity: 35,
                         status: "available",
-                        equipment: ["Recording Equipment", "Green Screen", "Lighting Kit"],
+                        equipment: ["Development Hardware", "Testing Equipment", "Prototype Stations"],
                         problems: []
                     },
                     {
-                        id: 502,
-                        name: "Podcast Room",
-                        capacity: 4,
-                        status: "occupied",
-                        equipment: ["Professional Microphones", "Acoustic Treatment", "Mixing Board"],
-                        problems: []
-                    },
-                    {
-                        id: 503,
-                        name: "Marketing War Room",
-                        capacity: 12,
-                        status: "maintenance",
-                        equipment: ["Multiple Screens", "Campaign Planning Tools", "Analytics Displays"],
-                        problems: [
-                            {
-                                type: "Network",
-                                description: "Internet speed below required threshold",
-                                priority: "Medium",
-                                reportedAt: "2024-01-15"
-                            },
-                            {
-                                type: "Equipment",
-                                description: "One monitor flickering",
-                                priority: "Low",
-                                reportedAt: "2024-01-14"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        id: 3,
-        name: "Building B3",
-        address: "789 Server Lane, Palo Alto, CA",
-        coordinates: [37.7649, -122.4294],
-        floors: [
-            {
-                id: 6,
-                name: "Ground Floor",
-                number: 0,
-                description: "Server Operations, Network Operations Center",
-                rooms: [
-                    {
-                        id: 601,
-                        name: "Network Operations Center",
+                        id: 2202,
+                        name: "Varanasi War Room",
                         capacity: 20,
-                        status: "occupied",
-                        equipment: ["Server Monitoring", "Network Displays", "24/7 Workstations"],
+                        status: "available",
+                        equipment: ["Multiple Screens", "Analytics Tools", "Collaboration Space"],
                         problems: []
                     },
                     {
-                        id: 602,
-                        name: "Server Room A",
-                        capacity: 5,
+                        id: 2203,
+                        name: "Delhi Executive Room",
+                        capacity: 18,
                         status: "maintenance",
-                        equipment: ["Climate Control", "Backup Power", "Fire Suppression"],
+                        equipment: ["Premium Furniture", "Executive Setup", "Video Conference"],
                         problems: [
                             {
                                 type: "Climate",
-                                description: "Temperature running higher than optimal",
-                                priority: "Critical",
-                                reportedAt: "2024-01-16"
-                            },
+                                description: "Air conditioning not working properly",
+                                priority: "Medium",
+                                reportedAt: "2024-01-15"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    // REDMOND CAMPUS (USA)
+    {
+        id: 31,
+        region: "redmond",
+        name: "Microsoft Building 92 - Executive Briefing Center",
+        address: "1 Microsoft Way, Redmond, WA 98052, USA",
+        coordinates: [47.6397, -122.1281],
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Executive Areas, Customer Briefing Centers",
+                rooms: [
+                    {
+                        id: 3101,
+                        name: "Executive Boardroom",
+                        capacity: 24,
+                        status: "available",
+                        equipment: ["8K Display Wall", "Premium Audio", "Executive Furniture", "Catering Kitchen"],
+                        problems: []
+                    },
+                    {
+                        id: 3102,
+                        name: "Customer Briefing Center",
+                        capacity: 50,
+                        status: "occupied",
+                        equipment: ["Interactive Demos", "Product Displays", "Presentation Theater"],
+                        problems: []
+                    },
+                    {
+                        id: 3103,
+                        name: "Innovation Showcase",
+                        capacity: 100,
+                        status: "available",
+                        equipment: ["HoloLens Demos", "AI Demonstrations", "Future Tech Displays"],
+                        problems: []
+                    },
+                    {
+                        id: 3104,
+                        name: "Seattle Conference Room",
+                        capacity: 16,
+                        status: "available",
+                        equipment: ["4K Video Conference", "Digital Whiteboard", "Premium Setup"],
+                        problems: []
+                    },
+                    {
+                        id: 3105,
+                        name: "Puget Sound Lounge",
+                        capacity: 30,
+                        status: "available",
+                        equipment: ["Comfortable Seating", "Coffee Bar", "Casual Meeting Area"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "First Floor",
+                number: 1,
+                description: "Strategy, Leadership, Advanced Technology",
+                rooms: [
+                    {
+                        id: 3201,
+                        name: "Strategy War Room",
+                        capacity: 20,
+                        status: "available",
+                        equipment: ["Data Visualization", "Analytics Displays", "Secure Communications"],
+                        problems: []
+                    },
+                    {
+                        id: 3202,
+                        name: "Leadership Meeting Room",
+                        capacity: 12,
+                        status: "occupied",
+                        equipment: ["Executive Setup", "Secure Video", "Premium Furnishing"],
+                        problems: []
+                    },
+                    {
+                        id: 3203,
+                        name: "Future Technology Lab",
+                        capacity: 25,
+                        status: "available",
+                        equipment: ["Research Equipment", "Prototype Hardware", "Advanced Computing"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 32,
+        region: "redmond",
+        name: "Microsoft Building 25 - Research & Development",
+        address: "1 Microsoft Way, Redmond, WA 98052, USA",
+        coordinates: [47.6420, -122.1250],
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Research Labs, Innovation Centers",
+                rooms: [
+                    {
+                        id: 3301,
+                        name: "AI Research Lab",
+                        capacity: 40,
+                        status: "available",
+                        equipment: ["GPU Clusters", "AI Hardware", "Research Workstations"],
+                        problems: []
+                    },
+                    {
+                        id: 3302,
+                        name: "Quantum Computing Lab",
+                        capacity: 15,
+                        status: "maintenance",
+                        equipment: ["Quantum Hardware", "Specialized Equipment", "Clean Room"],
+                        problems: [
                             {
                                 type: "Equipment",
-                                description: "Backup generator needs servicing",
-                                priority: "High",
-                                reportedAt: "2024-01-15"
+                                description: "Quantum system calibration needed",
+                                priority: "Critical",
+                                reportedAt: "2024-01-16"
                             }
                         ]
                     },
                     {
-                        id: 603,
-                        name: "Security Control",
-                        capacity: 6,
-                        status: "occupied",
-                        equipment: ["Security Monitors", "Access Control", "Communication Systems"],
+                        id: 3303,
+                        name: "Microsoft Research Café",
+                        capacity: 60,
+                        status: "available",
+                        equipment: ["Casual Seating", "Collaboration Spaces", "Research Library"],
                         problems: []
                     },
                     {
-                        id: 604,
-                        name: "Equipment Storage",
-                        capacity: 3,
+                        id: 3304,
+                        name: "Innovation Workshop",
+                        capacity: 20,
                         status: "available",
-                        equipment: ["Spare Hardware", "Tools", "Testing Equipment"],
+                        equipment: ["Maker Space", "3D Printers", "Electronics Lab"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "First Floor",
+                number: 1,
+                description: "Advanced Research, Think Tanks",
+                rooms: [
+                    {
+                        id: 3401,
+                        name: "Cloud Architecture Lab",
+                        capacity: 30,
+                        status: "occupied",
+                        equipment: ["Server Hardware", "Network Equipment", "Cloud Infrastructure"],
+                        problems: []
+                    },
+                    {
+                        id: 3402,
+                        name: "Redmond Think Tank",
+                        capacity: 10,
+                        status: "available",
+                        equipment: ["Brainstorming Tools", "Ideation Space", "Creative Equipment"],
+                        problems: []
+                    },
+                    {
+                        id: 3403,
+                        name: "Security Research Center",
+                        capacity: 25,
+                        status: "available",
+                        equipment: ["Security Hardware", "Testing Environment", "Isolated Networks"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 33,
+        region: "redmond",
+        name: "Microsoft Building 17 - The Commons",
+        address: "1 Microsoft Way, Redmond, WA 98052, USA",
+        coordinates: [47.6385, -122.1295],
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Central Hub, Dining, Social Spaces",
+                rooms: [
+                    {
+                        id: 3501,
+                        name: "Central Commons",
+                        capacity: 300,
+                        status: "available",
+                        equipment: ["Main Dining", "Multiple Food Stations", "Social Seating"],
+                        problems: []
+                    },
+                    {
+                        id: 3502,
+                        name: "Starbucks Coffee",
+                        capacity: 80,
+                        status: "available",
+                        equipment: ["Coffee Bar", "Casual Seating", "Meeting Spots"],
+                        problems: []
+                    },
+                    {
+                        id: 3503,
+                        name: "Company Store",
+                        capacity: 50,
+                        status: "available",
+                        equipment: ["Microsoft Merchandise", "Gift Shop", "Visitor Store"],
+                        problems: []
+                    },
+                    {
+                        id: 3504,
+                        name: "Event Center",
+                        capacity: 500,
+                        status: "available",
+                        equipment: ["Large Stage", "Professional AV", "Event Catering"],
                         problems: []
                     }
                 ]
@@ -603,6 +758,8 @@ const buildingsData = [
         ]
     }
 ];
+
+// Original existing data structure maintained...
 
 // Status configurations
 const statusConfig = {
