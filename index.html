@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Map Application</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="header-left">
+                <img src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31" alt="Microsoft" class="microsoft-logo">
+            </div>
+            <h1>Meeting Room Management</h1>
+            <div class="header-right">
+                <div class="ab-logo-container">
+                    <div class="ab-logo">AB</div>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Map Container -->
+            <div id="map"></div>
+            
+            <!-- Building Details Modal -->
+            <div id="buildingModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 id="buildingTitle">Building Details</h2>
+                    <div id="buildingInfo">
+                        <p id="buildingAddress"></p>
+                        <div id="floorsContainer">
+                            <h3>Floors</h3>
+                            <div id="floorsList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Floor Plan Modal -->
+            <div id="floorModal" class="modal">
+                <div class="modal-content floor-modal-content">
+                    <span class="close">&times;</span>
+                    <div class="floor-header">
+                        <h2 id="floorTitle">Floor Plan</h2>
+                        <button id="backToBuilding" class="btn-secondary">← Back to Building</button>
+                    </div>
+                    <div id="floorPlan">
+                        <div id="roomsGrid"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Room Details Modal -->
+            <div id="roomModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 id="roomTitle">Meeting Room Details</h2>
+                    <div id="roomInfo">
+                        <div class="room-status">
+                            <span id="roomStatusBadge" class="status-badge"></span>
+                            <span id="roomStatusText"></span>
+                        </div>
+                        <div id="roomCapacity"></div>
+                        <div id="roomEquipment"></div>
+                        <div id="roomProblems" class="room-problems"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
