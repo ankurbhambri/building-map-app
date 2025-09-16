@@ -4,18 +4,6 @@ A web-based application for visualizing company buildings, floors, and meeting r
 
 ## 📋 Requirements
 
-### System Requirements
-- **Web Browser**: Chrome 60+, Firefox 60+, Safari 12+, or Edge 79+
-- **Python**: Python 3.6+ (for local development server only)
-- **Internet Connection**: Required for loading Leaflet maps and Microsoft logo
-
-### ❌ What You DON'T Need to Install
-- ❌ **Node.js** (unless using Option 2 for serving files)
-- ❌ **React** (this is a vanilla JavaScript application)
-- ❌ **Leaflet library** (loaded automatically from CDN)
-- ❌ **npm packages** (no package.json required)
-- ❌ **Build tools** (no webpack, vite, etc.)
-
 ### ✅ What's Already Included
 - ✅ **Leaflet.js v1.9.4** - Loaded from CDN (`https://unpkg.com/leaflet@1.9.4/`)
 - ✅ **Vanilla JavaScript** - No frameworks needed

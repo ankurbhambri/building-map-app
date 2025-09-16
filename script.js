@@ -18,8 +18,8 @@ class BuildingMapApp {
     }
     
     initMap() {
-        // Initialize the map centered on San Francisco Bay Area
-        this.map = L.map('map').setView([37.7749, -122.4194], 12);
+        // Initialize the map centered on Hyderabad, India (Microsoft campus area)
+        this.map = L.map('map').setView([17.4241, 78.3872], 18);
         
         // Add tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

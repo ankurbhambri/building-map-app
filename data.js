@@ -3,6 +3,269 @@
 const buildingsData = [
     {
         id: 1,
+        name: "Microsoft Hyderabad Campus - Building B1",
+        address: "Building B1, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
+        coordinates: [17.4241, 78.3872], // Main building coordinates
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Reception, Lobby, Main Cafeteria, Security",
+                rooms: [
+                    {
+                        id: 101,
+                        name: "Godavari Conference Hall",
+                        capacity: 100,
+                        status: "available",
+                        equipment: ["Projector", "Video Conference", "Whiteboard", "Sound System", "Smart TV"],
+                        problems: []
+                    },
+                    {
+                        id: 102,
+                        name: "Krishna Meeting Room",
+                        capacity: 12,
+                        status: "occupied",
+                        equipment: ["TV Screen", "Conference Phone", "Whiteboard"],
+                        problems: []
+                    },
+                    {
+                        id: 103,
+                        name: "Tungabhadra Room",
+                        capacity: 8,
+                        status: "available",
+                        equipment: ["Smart TV", "Video Conference"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "First Floor",
+                number: 1,
+                description: "Executive Offices, Client Meeting Rooms",
+                rooms: [
+                    {
+                        id: 201,
+                        name: "Kaveri Conference Room",
+                        capacity: 20,
+                        status: "available",
+                        equipment: ["Projector", "Video Conference", "Whiteboard"],
+                        problems: []
+                    },
+                    {
+                        id: 202,
+                        name: "Narmada Meeting Room",
+                        capacity: 15,
+                        status: "available",
+                        equipment: ["Smart TV", "Conference Phone", "Digital Whiteboard"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 2,
+        name: "Microsoft Hyderabad Campus - Building B2",
+        address: "Building B2, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
+        coordinates: [17.4245, 78.3875], // Slightly offset coordinates for B2
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Development Teams, Open Workspace",
+                rooms: [
+                    {
+                        id: 101,
+                        name: "Yamuna Conference Room",
+                        capacity: 50,
+                        status: "available",
+                        equipment: ["Large Smart TV", "Video Conference", "Sound System"],
+                        problems: []
+                    },
+                    {
+                        id: 102,
+                        name: "Saraswati Meeting Room",
+                        capacity: 8,
+                        status: "maintenance",
+                        equipment: ["TV Screen", "Conference Phone"],
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "Video conference system not working",
+                                priority: "High",
+                                reportedAt: "2024-01-15"
+                            }
+                        ]
+                    },
+                    {
+                        id: 103,
+                        name: "Chenab Huddle Room",
+                        capacity: 4,
+                        status: "available",
+                        equipment: ["Smart TV", "Wireless presentation"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "First Floor",
+                number: 1,
+                description: "Product Teams, Innovation Labs",
+                rooms: [
+                    {
+                        id: 201,
+                        name: "Ravi Innovation Lab",
+                        capacity: 30,
+                        status: "available",
+                        equipment: ["Multiple Monitors", "Development Hardware", "Whiteboard"],
+                        problems: []
+                    },
+                    {
+                        id: 202,
+                        name: "Sutlej Collaboration Room",
+                        capacity: 12,
+                        status: "occupied",
+                        equipment: ["Interactive Display", "Video Conference"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 3,
+        name: "Microsoft Hyderabad Campus - Building B3",
+        address: "Building B3, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
+        coordinates: [17.4238, 78.3875], // Offset coordinates for B3
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Training Centers, Learning Spaces",
+                rooms: [
+                    {
+                        id: 101,
+                        name: "Indus Training Center",
+                        capacity: 80,
+                        status: "available",
+                        equipment: ["Multiple Projectors", "Sound System", "Interactive Whiteboards"],
+                        problems: []
+                    },
+                    {
+                        id: 102,
+                        name: "Beas Learning Room",
+                        capacity: 25,
+                        status: "available",
+                        equipment: ["Smart TV", "Video Conference", "Presentation Equipment"],
+                        problems: []
+                    },
+                    {
+                        id: 103,
+                        name: "Jhelum Workshop Room",
+                        capacity: 15,
+                        status: "occupied",
+                        equipment: ["Workshop Tools", "Presentation Screen"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "First Floor",
+                number: 1,
+                description: "Support Teams, IT Services",
+                rooms: [
+                    {
+                        id: 201,
+                        name: "Tapti Support Center",
+                        capacity: 20,
+                        status: "available",
+                        equipment: ["Multiple Screens", "Communication Systems"],
+                        problems: []
+                    },
+                    {
+                        id: 202,
+                        name: "Mahanadi IT Room",
+                        capacity: 10,
+                        status: "available",
+                        equipment: ["Server Access", "Monitoring Equipment"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 4,
+        name: "Microsoft Hyderabad Campus - Building B4",
+        address: "Building B4, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
+        coordinates: [17.4244, 78.3869], // Offset coordinates for B4
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                number: 0,
+                description: "Recreation, Wellness, Secondary Cafeteria",
+                rooms: [
+                    {
+                        id: 101,
+                        name: "Ganga Wellness Center",
+                        capacity: 40,
+                        status: "available",
+                        equipment: ["Fitness Equipment", "Relaxation Area"],
+                        problems: []
+                    },
+                    {
+                        id: 102,
+                        name: "Cauvery Recreation Room",
+                        capacity: 20,
+                        status: "available",
+                        equipment: ["Gaming Consoles", "Entertainment Systems"],
+                        problems: []
+                    },
+                    {
+                        id: 103,
+                        name: "Brahmaputra Cafeteria",
+                        capacity: 60,
+                        status: "available",
+                        equipment: ["Kitchen Facilities", "Dining Area"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "First Floor",
+                number: 1,
+                description: "Event Spaces, Large Meeting Halls",
+                rooms: [
+                    {
+                        id: 201,
+                        name: "Nerbadda Event Hall",
+                        capacity: 150,
+                        status: "available",
+                        equipment: ["Stage Setup", "Professional Sound System", "Lighting", "Video Walls"],
+                        problems: []
+                    },
+                    {
+                        id: 202,
+                        name: "Pennar Auditorium",
+                        capacity: 200,
+                        status: "available",
+                        equipment: ["Theater Seating", "Professional AV Setup", "Live Streaming"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 5,
         name: "Building B1",
         address: "123 Innovation Drive, Silicon Valley, CA",
         coordinates: [37.7749, -122.4194], // San Francisco coordinates
