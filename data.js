@@ -1,34 +1,100 @@
 // Sample data for the building map application
 
-// Region configurations
+// Region configurations with campus support
 const regionsData = {
     hyderabad: {
         name: "Hyderabad",
         country: "India",
         center: [17.4241, 78.3872],
         zoom: 16,
-        description: "Microsoft India Development Center - Hyderabad"
+        description: "Microsoft India Development Center - Hyderabad",
+        campuses: [
+            {
+                id: "hyderabad-microsoft-campus",
+                name: "Microsoft Campus",
+                description: "Main Microsoft Development Center",
+                center: [17.4243, 78.3874],
+                zoom: 17
+            },
+            {
+                id: "hyderabad-phoenix-standalone",
+                name: "Phoenix Building",
+                description: "Standalone Office Building",
+                center: [17.4478, 78.3745],
+                zoom: 18
+            }
+        ]
     },
     bangalore: {
         name: "Bangalore",
         country: "India", 
         center: [12.9716, 77.5946],
         zoom: 16,
-        description: "Microsoft India Development Center - Bangalore"
+        description: "Microsoft India Development Center - Bangalore",
+        campuses: [
+            {
+                id: "bangalore-main-campus",
+                name: "Main Campus",
+                description: "Primary Microsoft Development Center",
+                center: [12.9716, 77.5946],
+                zoom: 17
+            }
+        ]
     },
     noida: {
         name: "Noida",
         country: "India",
         center: [28.5355, 77.3910],
         zoom: 16,
-        description: "Microsoft India Development Center - Noida"
+        description: "Microsoft India Development Center - Noida",
+        campuses: [
+            {
+                id: "noida-microsoft-campus",
+                name: "Microsoft Campus",
+                description: "Main Microsoft Development Center",
+                center: [28.5355, 77.3910],
+                zoom: 17
+            },
+            {
+                id: "noida-taj-building",
+                name: "Taj Building",
+                description: "Secondary Office Location",
+                center: [28.5370, 77.3920],
+                zoom: 18
+            }
+        ]
     },
     redmond: {
         name: "Redmond",
         country: "USA",
         center: [47.6397, -122.1281],
         zoom: 15,
-        description: "Microsoft Headquarters Campus - Redmond"
+        description: "Microsoft Headquarters Campus - Redmond",
+        campuses: [
+            {
+                id: "redmond-main-campus",
+                name: "Main Campus",
+                description: "Microsoft Headquarters",
+                center: [47.6397, -122.1281],
+                zoom: 16
+            }
+        ]
+    },
+    phoenix: {
+        name: "Phoenix",
+        country: "USA",
+        center: [33.4484, -112.0740],
+        zoom: 16,
+        description: "Microsoft Office - Phoenix, Arizona",
+        campuses: [
+            {
+                id: "phoenix-standalone",
+                name: "Phoenix Office",
+                description: "Standalone Microsoft Office",
+                center: [33.4484, -112.0740],
+                zoom: 17
+            }
+        ]
     }
 };
 
@@ -37,6 +103,7 @@ const buildingsData = [
     {
         id: 1,
         region: "hyderabad",
+        campus: "hyderabad-microsoft-campus",
         name: "Microsoft Hyderabad Campus - Building B1",
         address: "Building B1, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
         coordinates: [17.4241, 78.3872],
@@ -155,17 +222,31 @@ const buildingsData = [
                         id: 205,
                         name: "Wellness Room",
                         capacity: 8,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["Meditation Cushions", "Yoga Mats", "Relaxation Lighting"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Climate",
+                                description: "Air conditioning not working properly",
+                                priority: "Medium",
+                                reportedAt: "2024-01-14"
+                            }
+                        ]
                     },
                     {
                         id: 206,
                         name: "Collaboration Space",
                         capacity: 12,
-                        status: "occupied",
+                        status: "maintenance",
                         equipment: ["Moveable Furniture", "Writable Walls", "Standing Desks"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "Interactive whiteboard malfunction",
+                                priority: "High",
+                                reportedAt: "2024-01-15"
+                            }
+                        ]
                     }
                 ]
             },
@@ -203,9 +284,16 @@ const buildingsData = [
                         id: 304,
                         name: "Printer & Copy Center",
                         capacity: 5,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["High-Speed Printers", "Scanners", "Paper Supplies"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "Main printer needs servicing",
+                                priority: "Low",
+                                reportedAt: "2024-01-13"
+                            }
+                        ]
                     }
                 ]
             }
@@ -215,6 +303,7 @@ const buildingsData = [
     {
         id: 2,
         region: "hyderabad",
+        campus: "hyderabad-microsoft-campus",
         name: "Microsoft Hyderabad Campus - Building B2",
         address: "Building B2, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
         coordinates: [17.4245, 78.3875],
@@ -252,9 +341,16 @@ const buildingsData = [
                         id: 103,
                         name: "Chenab Huddle Room",
                         capacity: 4,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["Smart TV", "Wireless presentation"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Network",
+                                description: "WiFi connectivity issues",
+                                priority: "Medium",
+                                reportedAt: "2024-01-16"
+                            }
+                        ]
                     },
                     {
                         id: 104,
@@ -428,6 +524,7 @@ const buildingsData = [
     {
         id: 21,
         region: "noida",
+        campus: "noida-microsoft-campus",
         name: "Microsoft Noida - Advant Navis",
         address: "Advant Navis Business Park, Sector 142, Noida, Uttar Pradesh 201305, India",
         coordinates: [28.5355, 77.3910],
@@ -514,16 +611,9 @@ const buildingsData = [
                         id: 2203,
                         name: "Delhi Executive Room",
                         capacity: 18,
-                        status: "maintenance",
+                        status: "available",
                         equipment: ["Premium Furniture", "Executive Setup", "Video Conference"],
-                        problems: [
-                            {
-                                type: "Climate",
-                                description: "Air conditioning not working properly",
-                                priority: "Medium",
-                                reportedAt: "2024-01-15"
-                            }
-                        ]
+                        problems: []
                     }
                 ]
             }
@@ -572,17 +662,31 @@ const buildingsData = [
                         id: 3104,
                         name: "Seattle Conference Room",
                         capacity: 16,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["4K Video Conference", "Digital Whiteboard", "Premium Setup"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "Digital whiteboard not responding",
+                                priority: "Medium",
+                                reportedAt: "2024-01-14"
+                            }
+                        ]
                     },
                     {
                         id: 3105,
                         name: "Puget Sound Lounge",
                         capacity: 30,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["Comfortable Seating", "Coffee Bar", "Casual Meeting Area"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Facility",
+                                description: "Coffee machine needs repair",
+                                priority: "Low",
+                                reportedAt: "2024-01-13"
+                            }
+                        ]
                     }
                 ]
             },
@@ -596,25 +700,46 @@ const buildingsData = [
                         id: 3201,
                         name: "Strategy War Room",
                         capacity: 20,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["Data Visualization", "Analytics Displays", "Secure Communications"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Network",
+                                description: "Secure network connection issues",
+                                priority: "High",
+                                reportedAt: "2024-01-16"
+                            }
+                        ]
                     },
                     {
                         id: 3202,
                         name: "Leadership Meeting Room",
                         capacity: 12,
-                        status: "occupied",
+                        status: "maintenance",
                         equipment: ["Executive Setup", "Secure Video", "Premium Furnishing"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "Video conference system upgrade needed",
+                                priority: "Medium",
+                                reportedAt: "2024-01-15"
+                            }
+                        ]
                     },
                     {
                         id: 3203,
                         name: "Future Technology Lab",
                         capacity: 25,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["Research Equipment", "Prototype Hardware", "Advanced Computing"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "Prototype hardware requires calibration",
+                                priority: "High",
+                                reportedAt: "2024-01-15"
+                            }
+                        ]
                     }
                 ]
             }
@@ -684,25 +809,46 @@ const buildingsData = [
                         id: 3401,
                         name: "Cloud Architecture Lab",
                         capacity: 30,
-                        status: "occupied",
+                        status: "maintenance",
                         equipment: ["Server Hardware", "Network Equipment", "Cloud Infrastructure"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Network",
+                                description: "Network infrastructure upgrade in progress",
+                                priority: "High",
+                                reportedAt: "2024-01-16"
+                            }
+                        ]
                     },
                     {
                         id: 3402,
                         name: "Redmond Think Tank",
                         capacity: 10,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["Brainstorming Tools", "Ideation Space", "Creative Equipment"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Facility",
+                                description: "Room renovation in progress",
+                                priority: "Medium",
+                                reportedAt: "2024-01-14"
+                            }
+                        ]
                     },
                     {
                         id: 3403,
                         name: "Security Research Center",
                         capacity: 25,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["Security Hardware", "Testing Environment", "Isolated Networks"],
-                        problems: []
+                        problems: [
+                            {
+                                type: "Security",
+                                description: "Security system updates in progress",
+                                priority: "Critical",
+                                reportedAt: "2024-01-16"
+                            }
+                        ]
                     }
                 ]
             }
@@ -749,9 +895,314 @@ const buildingsData = [
                         id: 3504,
                         name: "Event Center",
                         capacity: 500,
-                        status: "available",
+                        status: "maintenance",
                         equipment: ["Large Stage", "Professional AV", "Event Catering"],
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "Sound system requires professional calibration",
+                                priority: "Medium",
+                                reportedAt: "2024-01-15"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    // Additional Hyderabad Campus Buildings
+    {
+        id: "hyderabad-b3",
+        name: "Hyderabad Building B3",
+        region: "hyderabad",
+        campus: "hyderabad-phoenix-standalone",
+        coordinates: [17.4478, 78.3745],
+        address: "Microsoft Building B3, Financial District, Hyderabad",
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                rooms: [
+                    {
+                        id: 4001,
+                        name: "Reception & Visitor Center",
+                        capacity: 50,
+                        status: "available",
+                        equipment: ["Reception Desk", "Visitor Badges", "Security Check"],
                         problems: []
+                    },
+                    {
+                        id: 4002,
+                        name: "Innovation Lab",
+                        capacity: 40,
+                        status: "maintenance",
+                        equipment: ["3D Printers", "VR Setup", "Prototyping Tools"],
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "3D printer requires maintenance",
+                                priority: "Medium",
+                                reportedAt: "2024-01-18"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "Second Floor",
+                rooms: [
+                    {
+                        id: 4101,
+                        name: "Open Workspace B3-2A",
+                        capacity: 60,
+                        status: "occupied",
+                        equipment: ["Hot Desks", "Collaboration Zones", "Phone Booths"],
+                        problems: []
+                    },
+                    {
+                        id: 4102,
+                        name: "Team Room Alpha",
+                        capacity: 12,
+                        status: "available",
+                        equipment: ["Large Display", "Video Conferencing", "Whiteboard"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: "hyderabad-b4",
+        name: "Hyderabad Building B4",
+        region: "hyderabad",
+        campus: "hyderabad-phoenix-standalone",
+        coordinates: [17.4485, 78.3755],
+        address: "Microsoft Building B4, Financial District, Hyderabad",
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                rooms: [
+                    {
+                        id: 4201,
+                        name: "Cafeteria Extension",
+                        capacity: 150,
+                        status: "available",
+                        equipment: ["Additional Seating", "Food Court", "Coffee Station"],
+                        problems: []
+                    },
+                    {
+                        id: 4202,
+                        name: "Fitness Center",
+                        capacity: 30,
+                        status: "available",
+                        equipment: ["Gym Equipment", "Yoga Room", "Changing Rooms"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "Second Floor",
+                rooms: [
+                    {
+                        id: 4301,
+                        name: "Training Center B4",
+                        capacity: 80,
+                        status: "occupied",
+                        equipment: ["Training Pods", "Interactive Displays", "Learning Lab"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: "hyderabad-b5",
+        name: "Hyderabad Building B5",
+        region: "hyderabad",
+        coordinates: [17.4490, 78.3750],
+        address: "Microsoft Building B5, Financial District, Hyderabad",
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                rooms: [
+                    {
+                        id: 4401,
+                        name: "Data Center B5",
+                        capacity: 10,
+                        status: "maintenance",
+                        equipment: ["Servers", "Cooling Systems", "Backup Power"],
+                        problems: [
+                            {
+                                type: "Climate",
+                                description: "Cooling system efficiency check needed",
+                                priority: "High",
+                                reportedAt: "2024-01-17"
+                            }
+                        ]
+                    },
+                    {
+                        id: 4402,
+                        name: "Network Operations Center",
+                        capacity: 20,
+                        status: "occupied",
+                        equipment: ["Network Monitors", "Communication Hub", "24/7 Operations"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: "hyderabad-b6",
+        name: "Hyderabad Building B6",
+        region: "hyderabad",
+        coordinates: [17.4495, 78.3765],
+        address: "Microsoft Building B6, Financial District, Hyderabad",
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                rooms: [
+                    {
+                        id: 4501,
+                        name: "Customer Briefing Center",
+                        capacity: 40,
+                        status: "available",
+                        equipment: ["Presentation Theater", "Demo Areas", "Customer Lounge"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "Second Floor",
+                rooms: [
+                    {
+                        id: 4601,
+                        name: "Executive Suites",
+                        capacity: 25,
+                        status: "available",
+                        equipment: ["Executive Offices", "Board Room", "Private Meeting Spaces"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    // Phoenix Standalone Building
+    {
+        id: "phoenix-main",
+        name: "Phoenix Microsoft Office",
+        region: "phoenix",
+        coordinates: [33.4484, -112.0740],
+        address: "Microsoft Office, Phoenix, Arizona",
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                rooms: [
+                    {
+                        id: 5001,
+                        name: "Phoenix Reception",
+                        capacity: 20,
+                        status: "available",
+                        equipment: ["Reception Desk", "Visitor Area", "Information Display"],
+                        problems: []
+                    },
+                    {
+                        id: 5002,
+                        name: "Phoenix Conference Room",
+                        capacity: 30,
+                        status: "maintenance",
+                        equipment: ["Video Conferencing", "Large Display", "Audio System"],
+                        problems: [
+                            {
+                                type: "Equipment",
+                                description: "Video conferencing system needs software update",
+                                priority: "Low",
+                                reportedAt: "2024-01-20"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "Second Floor",
+                rooms: [
+                    {
+                        id: 5101,
+                        name: "Phoenix Open Office",
+                        capacity: 50,
+                        status: "occupied",
+                        equipment: ["Open Desks", "Collaboration Areas", "Break Room"],
+                        problems: []
+                    }
+                ]
+            }
+        ]
+    },
+    // Noida Taj Building - Secondary Location
+    {
+        id: "noida-taj",
+        name: "Noida Taj Building",
+        region: "noida",
+        campus: "noida-taj-building",
+        coordinates: [28.5370, 77.3920],
+        address: "Taj Building, Sector 142, Noida, Uttar Pradesh",
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                rooms: [
+                    {
+                        id: 6001,
+                        name: "Taj Reception",
+                        capacity: 30,
+                        status: "available",
+                        equipment: ["Reception Desk", "Visitor Lounge", "Information Kiosk"],
+                        problems: []
+                    },
+                    {
+                        id: 6002,
+                        name: "Taj Conference Hall",
+                        capacity: 60,
+                        status: "occupied",
+                        equipment: ["Large Screen", "Audio System", "Video Conferencing"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "Second Floor",
+                rooms: [
+                    {
+                        id: 6101,
+                        name: "Taj Open Office",
+                        capacity: 80,
+                        status: "available",
+                        equipment: ["Hot Desks", "Collaborative Spaces", "Coffee Station"],
+                        problems: []
+                    },
+                    {
+                        id: 6102,
+                        name: "Taj Server Room",
+                        capacity: 5,
+                        status: "maintenance",
+                        equipment: ["Server Racks", "Network Equipment", "Backup Systems"],
+                        problems: [
+                            {
+                                type: "Network",
+                                description: "Network switch requires firmware update",
+                                priority: "Medium",
+                                reportedAt: "2024-01-19"
+                            }
+                        ]
                     }
                 ]
             }

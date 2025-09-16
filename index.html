@@ -36,31 +36,91 @@
                 <div class="sidebar-content">
                     <div class="region-list">
                         <div class="region-item active" data-region="hyderabad">
-                            <div class="region-flag">🇮🇳</div>
-                            <div class="region-info">
-                                <div class="region-name">Hyderabad</div>
-                                <div class="region-country">India</div>
+                            <div class="region-header">
+                                <div class="region-flag">🇮🇳</div>
+                                <div class="region-info">
+                                    <div class="region-name">Hyderabad</div>
+                                    <div class="region-country">India</div>
+                                </div>
+                                <div class="expand-icon">▼</div>
+                            </div>
+                            <div class="campus-list">
+                                <div class="campus-item active" data-campus="hyderabad-microsoft-campus">
+                                    <span class="campus-icon">🏢</span>
+                                    <span class="campus-name">Microsoft Campus</span>
+                                </div>
+                                <div class="campus-item" data-campus="hyderabad-phoenix-standalone">
+                                    <span class="campus-icon">🏢</span>
+                                    <span class="campus-name">Phoenix Building</span>
+                                </div>
                             </div>
                         </div>
                         <div class="region-item" data-region="bangalore">
-                            <div class="region-flag">🇮🇳</div>
-                            <div class="region-info">
-                                <div class="region-name">Bangalore</div>
-                                <div class="region-country">India</div>
+                            <div class="region-header">
+                                <div class="region-flag">🇮🇳</div>
+                                <div class="region-info">
+                                    <div class="region-name">Bangalore</div>
+                                    <div class="region-country">India</div>
+                                </div>
+                                <div class="expand-icon">▶</div>
+                            </div>
+                            <div class="campus-list collapsed">
+                                <div class="campus-item" data-campus="bangalore-main-campus">
+                                    <span class="campus-icon">🏢</span>
+                                    <span class="campus-name">Main Campus</span>
+                                </div>
                             </div>
                         </div>
                         <div class="region-item" data-region="noida">
-                            <div class="region-flag">🇮🇳</div>
-                            <div class="region-info">
-                                <div class="region-name">Noida</div>
-                                <div class="region-country">India</div>
+                            <div class="region-header">
+                                <div class="region-flag">🇮🇳</div>
+                                <div class="region-info">
+                                    <div class="region-name">Noida</div>
+                                    <div class="region-country">India</div>
+                                </div>
+                                <div class="expand-icon">▶</div>
+                            </div>
+                            <div class="campus-list collapsed">
+                                <div class="campus-item" data-campus="noida-microsoft-campus">
+                                    <span class="campus-icon">🏢</span>
+                                    <span class="campus-name">Microsoft Campus</span>
+                                </div>
+                                <div class="campus-item" data-campus="noida-taj-building">
+                                    <span class="campus-icon">🏢</span>
+                                    <span class="campus-name">Taj Building</span>
+                                </div>
                             </div>
                         </div>
                         <div class="region-item" data-region="redmond">
-                            <div class="region-flag">🇺🇸</div>
-                            <div class="region-info">
-                                <div class="region-name">Redmond</div>
-                                <div class="region-country">USA</div>
+                            <div class="region-header">
+                                <div class="region-flag">🇺🇸</div>
+                                <div class="region-info">
+                                    <div class="region-name">Redmond</div>
+                                    <div class="region-country">USA</div>
+                                </div>
+                                <div class="expand-icon">▶</div>
+                            </div>
+                            <div class="campus-list collapsed">
+                                <div class="campus-item" data-campus="redmond-main-campus">
+                                    <span class="campus-icon">🏢</span>
+                                    <span class="campus-name">Main Campus</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="region-item" data-region="phoenix">
+                            <div class="region-header">
+                                <div class="region-flag">🇺🇸</div>
+                                <div class="region-info">
+                                    <div class="region-name">Phoenix</div>
+                                    <div class="region-country">USA</div>
+                                </div>
+                                <div class="expand-icon">▶</div>
+                            </div>
+                            <div class="campus-list collapsed">
+                                <div class="campus-item" data-campus="phoenix-standalone">
+                                    <span class="campus-icon">🏢</span>
+                                    <span class="campus-name">Phoenix Office</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -72,7 +132,7 @@
                 
                 <!-- Region Statistics -->
                 <div class="region-stats" id="regionStats">
-                    <div class="stats-title">Current Region</div>
+                    <div class="stats-title" id="statsTitle">Current Region</div>
                     <div class="stats-grid">
                         <div class="stat-item">
                             <div class="stat-number" id="statBuildings">4</div>
@@ -80,11 +140,15 @@
                         </div>
                         <div class="stat-item">
                             <div class="stat-number" id="statRooms">45</div>
-                            <div class="stat-label">Rooms</div>
+                            <div class="stat-label">Total Rooms</div>
                         </div>
-                        <div class="stat-item">
+                        <div class="stat-item stat-available">
                             <div class="stat-number" id="statAvailable">38</div>
                             <div class="stat-label">Available</div>
+                        </div>
+                        <div class="stat-item stat-maintenance">
+                            <div class="stat-number" id="statMaintenance">3</div>
+                            <div class="stat-label">Maintenance</div>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ class BuildingMapApp {
     constructor() {
         this.map = null;
         this.currentRegion = 'hyderabad'; // Default region
+        this.currentCampus = null; // Default no specific campus
         this.currentBuilding = null;
         this.currentFloor = null;
         this.currentRoom = null;
@@ -33,11 +34,34 @@ class BuildingMapApp {
     }
     
     initEventListeners() {
-        // Region selector listeners
-        document.querySelectorAll('.region-item').forEach(item => {
+        // Region header listeners (for expanding/collapsing)
+        document.querySelectorAll('.region-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                const regionItem = e.currentTarget.closest('.region-item');
+                const campusList = regionItem.querySelector('.campus-list');
+                const expandIcon = regionItem.querySelector('.expand-icon');
+                
+                // Toggle campus list visibility
+                campusList.classList.toggle('collapsed');
+                expandIcon.style.transform = campusList.classList.contains('collapsed') ? 
+                    'rotate(0deg)' : 'rotate(90deg)';
+                
+                // If expanding, also switch to this region
+                if (!campusList.classList.contains('collapsed')) {
+                    const region = regionItem.dataset.region;
+                    this.switchRegion(region, null); // No specific campus initially
+                }
+            });
+        });
+
+        // Campus selector listeners
+        document.querySelectorAll('.campus-item').forEach(item => {
             item.addEventListener('click', (e) => {
-                const region = e.currentTarget.dataset.region;
-                this.switchRegion(region);
+                e.stopPropagation(); // Prevent region header click
+                const campus = e.currentTarget.dataset.campus;
+                const regionItem = e.currentTarget.closest('.region-item');
+                const region = regionItem.dataset.region;
+                this.switchRegion(region, campus);
             });
         });
         
@@ -90,38 +114,64 @@ class BuildingMapApp {
         });
     }
     
-    switchRegion(regionKey) {
-        if (regionKey === this.currentRegion) return;
-        
+    switchRegion(regionKey, campusKey = null) {
         // Update UI
         document.querySelectorAll('.region-item').forEach(item => {
             item.classList.remove('active');
         });
-        document.querySelector(`[data-region="${regionKey}"]`).classList.add('active');
+        document.querySelectorAll('.campus-item').forEach(item => {
+            item.classList.remove('active');
+        });
         
-        // Update current region
+        const regionItem = document.querySelector(`[data-region="${regionKey}"]`);
+        regionItem.classList.add('active');
+        
+        if (campusKey) {
+            const campusItem = document.querySelector(`[data-campus="${campusKey}"]`);
+            if (campusItem) {
+                campusItem.classList.add('active');
+            }
+        }
+        
+        // Update current region and campus
         this.currentRegion = regionKey;
+        this.currentCampus = campusKey;
         
-        // Load new region
-        this.loadRegion(regionKey);
+        // Load new region/campus
+        this.loadRegion(regionKey, campusKey);
         this.updateRegionStats();
         
         // Close any open modals
         this.closeAllModals();
     }
     
-    loadRegion(regionKey) {
+    loadRegion(regionKey, campusKey = null) {
         // Clear existing markers
         this.clearMarkers();
         
         // Get region data
         const regionData = regionsData[regionKey];
         
-        // Update map view
-        this.map.setView(regionData.center, regionData.zoom);
+        // Update map view based on campus or region
+        if (campusKey && regionData.campuses) {
+            const campusData = regionData.campuses.find(c => c.id === campusKey);
+            if (campusData) {
+                this.map.setView(campusData.center, campusData.zoom);
+            } else {
+                this.map.setView(regionData.center, regionData.zoom);
+            }
+        } else {
+            this.map.setView(regionData.center, regionData.zoom);
+        }
         
-        // Load buildings for this region
-        const regionBuildings = buildingsData.filter(building => building.region === regionKey);
+        // Load buildings for this region/campus
+        let regionBuildings = buildingsData.filter(building => building.region === regionKey);
+        
+        // Filter by campus if specified
+        if (campusKey) {
+            regionBuildings = regionBuildings.filter(building => building.campus === campusKey);
+        }
+        
         regionBuildings.forEach(building => {
             this.addBuildingMarker(building);
         });
@@ -151,25 +201,71 @@ class BuildingMapApp {
     }
     
     updateRegionStats() {
-        const regionBuildings = buildingsData.filter(building => building.region === this.currentRegion);
+        let regionBuildings = buildingsData.filter(building => building.region === this.currentRegion);
+        
+        // Filter by campus if one is selected
+        if (this.currentCampus) {
+            regionBuildings = regionBuildings.filter(building => building.campus === this.currentCampus);
+        }
         
         let totalRooms = 0;
         let availableRooms = 0;
+        let maintenanceRooms = 0;
         
         regionBuildings.forEach(building => {
             building.floors.forEach(floor => {
                 totalRooms += floor.rooms.length;
                 availableRooms += floor.rooms.filter(room => room.status === 'available').length;
+                maintenanceRooms += floor.rooms.filter(room => room.status === 'maintenance').length;
             });
         });
+        
+        // Update statistics title
+        const regionData = regionsData[this.currentRegion];
+        let title = `Current Region: ${regionData.name}`;
+        if (this.currentCampus) {
+            const campusData = regionData.campuses?.find(c => c.id === this.currentCampus);
+            if (campusData) {
+                title += ` - ${campusData.name}`;
+            }
+        }
+        document.getElementById('statsTitle').textContent = title;
         
         document.getElementById('statBuildings').textContent = regionBuildings.length;
         document.getElementById('statRooms').textContent = totalRooms;
         document.getElementById('statAvailable').textContent = availableRooms;
+        document.getElementById('statMaintenance').textContent = maintenanceRooms;
     }
     
     addBuildingMarker(building) {
-        const marker = L.marker(building.coordinates)
+        // Check if building has maintenance rooms
+        const maintenanceRooms = this.getMaintenanceRooms(building);
+        const hasMaintenanceIssues = maintenanceRooms > 0;
+        
+        // Create custom building icon
+        const iconColor = hasMaintenanceIssues ? '#e74c3c' : '#3498db'; // Red for maintenance, blue for normal
+        const buildingIcon = L.divIcon({
+            html: `<div style="
+                background-color: ${iconColor};
+                border: 2px solid white;
+                border-radius: 6px;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+            ">🏢</div>`,
+            className: 'custom-building-marker',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+        
+        const marker = L.marker(building.coordinates, { icon: buildingIcon })
             .addTo(this.map)
             .bindPopup(this.createBuildingPopup(building), {
                 maxWidth: 300,
@@ -189,13 +285,34 @@ class BuildingMapApp {
     }
     
     createBuildingPopup(building) {
+        const totalRooms = this.getTotalRooms(building);
+        const availableRooms = this.getAvailableRooms(building);
+        const maintenanceRooms = this.getMaintenanceRooms(building);
+        const occupiedRooms = totalRooms - availableRooms - maintenanceRooms;
+        
         return `
             <div class="custom-popup">
                 <h3>${building.name}</h3>
                 <p><strong>Address:</strong> ${building.address}</p>
                 <p><strong>Floors:</strong> ${building.floors.length}</p>
-                <p><strong>Total Rooms:</strong> ${this.getTotalRooms(building)}</p>
-                <button class="popup-button" onclick="app.showBuildingDetails(${building.id})">
+                <p><strong>Total Rooms:</strong> ${totalRooms}</p>
+                <div class="room-status-breakdown">
+                    <div class="status-item available">
+                        <span class="status-dot available"></span>
+                        <span>Available: ${availableRooms}</span>
+                    </div>
+                    <div class="status-item occupied">
+                        <span class="status-dot occupied"></span>
+                        <span>Occupied: ${occupiedRooms}</span>
+                    </div>
+                    ${maintenanceRooms > 0 ? `
+                    <div class="status-item maintenance">
+                        <span class="status-dot maintenance"></span>
+                        <span>Maintenance: ${maintenanceRooms}</span>
+                    </div>
+                    ` : ''}
+                </div>
+                <button class="popup-button" onclick="app.showBuildingDetails('${building.id}')">
                     View Details
                 </button>
             </div>
@@ -204,6 +321,16 @@ class BuildingMapApp {
     
     getTotalRooms(building) {
         return building.floors.reduce((total, floor) => total + floor.rooms.length, 0);
+    }
+    
+    getAvailableRooms(building) {
+        return building.floors.reduce((total, floor) => 
+            total + floor.rooms.filter(room => room.status === 'available').length, 0);
+    }
+    
+    getMaintenanceRooms(building) {
+        return building.floors.reduce((total, floor) => 
+            total + floor.rooms.filter(room => room.status === 'maintenance').length, 0);
     }
     
     showBuildingDetails(buildingId) {
