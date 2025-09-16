@@ -367,3 +367,87 @@ const priorityConfig = {
     Medium: { color: "#f1c40f", urgency: 2 },
     Low: { color: "#95a5a6", urgency: 1 }
 };
+
+// Dummy engineer data for dispatch system
+const engineersData = [
+    {
+        id: 1,
+        name: "John Smith",
+        initials: "JS",
+        specialty: "Equipment",
+        experience: "5 years",
+        status: "available",
+        phone: "+1 (555) 123-4567",
+        email: "john.smith@company.com",
+        currentLocation: "Building B1 - Floor 2",
+        estimatedArrival: "15-20 minutes"
+    },
+    {
+        id: 2,
+        name: "Sarah Chen",
+        initials: "SC",
+        specialty: "Network",
+        experience: "7 years",
+        status: "available",
+        phone: "+1 (555) 234-5678",
+        email: "sarah.chen@company.com",
+        currentLocation: "Building B3 - Server Room",
+        estimatedArrival: "10-15 minutes"
+    },
+    {
+        id: 3,
+        name: "Mike Johnson",
+        initials: "MJ",
+        specialty: "Climate",
+        experience: "8 years",
+        status: "available",
+        phone: "+1 (555) 345-6789",
+        email: "mike.johnson@company.com",
+        currentLocation: "Building B2 - Maintenance",
+        estimatedArrival: "20-25 minutes"
+    },
+    {
+        id: 4,
+        name: "Lisa Wong",
+        initials: "LW",
+        specialty: "Security",
+        experience: "6 years",
+        status: "busy",
+        phone: "+1 (555) 456-7890",
+        email: "lisa.wong@company.com",
+        currentLocation: "Building B1 - Security Office",
+        estimatedArrival: "45-60 minutes"
+    },
+    {
+        id: 5,
+        name: "David Brown",
+        initials: "DB",
+        specialty: "Facility",
+        experience: "10 years",
+        status: "available",
+        phone: "+1 (555) 567-8901",
+        email: "david.brown@company.com",
+        currentLocation: "Main Office",
+        estimatedArrival: "30-40 minutes"
+    }
+];
+
+// Function to get best available engineer for a problem type
+function getAvailableEngineer(problemType = "Equipment") {
+    // First try to find an available engineer with matching specialty
+    let engineer = engineersData.find(eng => 
+        eng.specialty === problemType && eng.status === "available"
+    );
+    
+    // If no specialist available, get any available engineer
+    if (!engineer) {
+        engineer = engineersData.find(eng => eng.status === "available");
+    }
+    
+    // If all busy, get the least busy engineer
+    if (!engineer) {
+        engineer = engineersData.find(eng => eng.status === "busy");
+    }
+    
+    return engineer || engineersData[0]; // Fallback to first engineer
+}

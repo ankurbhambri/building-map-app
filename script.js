@@ -5,6 +5,7 @@ class BuildingMapApp {
         this.map = null;
         this.currentBuilding = null;
         this.currentFloor = null;
+        this.currentRoom = null;
         this.markers = [];
         
         this.init();
@@ -50,6 +51,20 @@ class BuildingMapApp {
             this.closeModal(document.getElementById('floorModal'));
             // Then show the building details
             this.showBuildingDetails(this.currentBuilding);
+        });
+        
+        // Dispatch engineer button
+        document.getElementById('dispatchEngineerBtn').addEventListener('click', () => {
+            this.showDispatchModal();
+        });
+        
+        // Dispatch modal buttons
+        document.getElementById('cancelDispatch').addEventListener('click', () => {
+            this.closeModal(document.getElementById('dispatchModal'));
+        });
+        
+        document.getElementById('confirmDispatch').addEventListener('click', () => {
+            this.confirmDispatch();
         });
         
         // Escape key to close modals
@@ -187,6 +202,7 @@ class BuildingMapApp {
     
     showRoomDetails(room) {
         const statusInfo = statusConfig[room.status];
+        this.currentRoom = room; // Store current room reference
         
         // Update modal content
         document.getElementById('roomTitle').textContent = room.name;
@@ -229,6 +245,14 @@ class BuildingMapApp {
             `;
         } else {
             problemsDiv.style.display = 'none';
+        }
+        
+        // Show/hide dispatch section based on room status
+        const dispatchSection = document.getElementById('dispatchSection');
+        if (room.status === 'maintenance' && room.problems && room.problems.length > 0) {
+            dispatchSection.style.display = 'block';
+        } else {
+            dispatchSection.style.display = 'none';
         }
         
         // Show modal
@@ -358,6 +382,115 @@ class BuildingMapApp {
                 }
             }
         });
+    }
+    
+    // Dispatch Engineer Methods
+    showDispatchModal() {
+        if (!this.currentRoom) return;
+        
+        // Get the most appropriate engineer for the problem type
+        const primaryProblem = this.currentRoom.problems[0];
+        const engineer = getAvailableEngineer(primaryProblem.type);
+        
+        // Pre-fill form with problem information
+        document.getElementById('urgencyLevel').value = primaryProblem.priority;
+        document.getElementById('problemCategory').value = primaryProblem.type;
+        document.getElementById('requestDescription').value = primaryProblem.description;
+        
+        // Show assigned engineer
+        this.displayAssignedEngineer(engineer);
+        
+        // Show dispatch modal
+        this.showModal('dispatchModal');
+    }
+    
+    displayAssignedEngineer(engineer) {
+        const engineerContainer = document.getElementById('assignedEngineer');
+        engineerContainer.innerHTML = `
+            <div class="engineer-card">
+                <div class="engineer-avatar">${engineer.initials}</div>
+                <div class="engineer-details">
+                    <h4>${engineer.name}</h4>
+                    <p><strong>Specialty:</strong> ${engineer.specialty} • ${engineer.experience}</p>
+                    <p><strong>Phone:</strong> ${engineer.phone}</p>
+                    <p><strong>Current Location:</strong> ${engineer.currentLocation}</p>
+                    <p><strong>ETA:</strong> ${engineer.estimatedArrival}</p>
+                    <span class="engineer-status ${engineer.status}">${engineer.status}</span>
+                </div>
+            </div>
+        `;
+    }
+    
+    confirmDispatch() {
+        const urgency = document.getElementById('urgencyLevel').value;
+        const category = document.getElementById('problemCategory').value;
+        const description = document.getElementById('requestDescription').value;
+        
+        // Create dispatch request
+        const dispatchRequest = {
+            id: Date.now(),
+            roomName: this.currentRoom.name,
+            buildingName: this.currentBuilding.name,
+            floorName: this.currentFloor.name,
+            urgency: urgency,
+            category: category,
+            description: description,
+            requestedAt: new Date().toISOString(),
+            status: 'dispatched'
+        };
+        
+        // Close dispatch modal
+        this.closeModal(document.getElementById('dispatchModal'));
+        
+        // Show success notification
+        this.showNotification(
+            'success',
+            'Engineer Dispatched!',
+            `Engineer has been successfully dispatched to ${this.currentRoom.name}. Estimated arrival: 15-20 minutes.`
+        );
+        
+        // Simulate dispatch completion after 3 seconds
+        setTimeout(() => {
+            this.showNotification(
+                'success',
+                'Engineer En Route',
+                `Engineer John Smith is now en route to ${this.currentRoom.name}. Track progress via mobile app.`
+            );
+        }, 3000);
+        
+        // Log the dispatch request
+        console.log('Dispatch Request Created:', dispatchRequest);
+    }
+    
+    showNotification(type, title, message) {
+        const container = document.getElementById('notificationContainer');
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        
+        const icons = {
+            success: '✅',
+            error: '❌',
+            warning: '⚠️'
+        };
+        
+        notification.innerHTML = `
+            <button class="notification-close" onclick="this.parentElement.remove()">&times;</button>
+            <div class="notification-header">
+                <span class="notification-icon">${icons[type] || '📢'}</span>
+                <span class="notification-title">${title}</span>
+            </div>
+            <div class="notification-message">${message}</div>
+        `;
+        
+        container.appendChild(notification);
+        
+        // Auto-remove after 8 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }
+        }, 8000);
     }
 }
 

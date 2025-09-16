@@ -73,10 +73,66 @@
                         <div id="roomCapacity"></div>
                         <div id="roomEquipment"></div>
                         <div id="roomProblems" class="room-problems"></div>
+                        <div id="dispatchSection" class="dispatch-section">
+                            <button id="dispatchEngineerBtn" class="dispatch-btn">
+                                🔧 Dispatch Engineer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Engineer Dispatch Modal -->
+            <div id="dispatchModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>🔧 Dispatch Engineer Request</h2>
+                    <div id="dispatchForm">
+                        <div class="form-group">
+                            <label for="urgencyLevel">Priority Level:</label>
+                            <select id="urgencyLevel" class="form-input">
+                                <option value="Low">Low Priority</option>
+                                <option value="Medium">Medium Priority</option>
+                                <option value="High" selected>High Priority</option>
+                                <option value="Critical">Critical Priority</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="problemCategory">Problem Category:</label>
+                            <select id="problemCategory" class="form-input">
+                                <option value="Equipment">Equipment Failure</option>
+                                <option value="Network">Network Issues</option>
+                                <option value="Climate">Climate Control</option>
+                                <option value="Security">Security Systems</option>
+                                <option value="Facility">General Facility</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="requestDescription">Additional Details:</label>
+                            <textarea id="requestDescription" class="form-input" rows="4" 
+                                placeholder="Describe the issue in detail..."></textarea>
+                        </div>
+                        
+                        <div class="engineer-assignment">
+                            <h3>📋 Engineer Assignment</h3>
+                            <div id="assignedEngineer" class="engineer-info">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button id="cancelDispatch" class="btn-secondary">Cancel</button>
+                            <button id="confirmDispatch" class="btn-primary">Confirm Dispatch</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
+        
+        <!-- Notification Container -->
+        <div id="notificationContainer"></div>
     </div>
     
     <!-- Leaflet JS -->
