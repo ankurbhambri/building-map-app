@@ -19,7 +19,7 @@ class BuildingMapApp {
     
     initMap() {
         // Initialize the map centered on Hyderabad, India (Microsoft campus area)
-        this.map = L.map('map').setView([17.4241, 78.3872], 18);
+        this.map = L.map('map').setView([17.4241, 78.3872], 16);
         
         // Add tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
