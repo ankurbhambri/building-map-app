@@ -111,6 +111,17 @@ const buildingsData = [
                         capacity: 100,
                         status: "available",
                         equipment: ["Projector", "Video Conference", "Whiteboard", "Sound System", "Smart TV"],
+                        amenities: {
+                            audioVisual: ["4K Projector", "Dolby Sound System", "Wireless Microphones", "75-inch Smart TV", "Video Conferencing Camera"],
+                            furniture: ["Executive Chairs (100)", "Conference Table (20-person)", "Podium", "Side Tables"],
+                            technology: ["WiFi 6", "USB-C Ports", "Wireless Presentation", "Smart Board", "Room Control Panel"],
+                            accessibility: ["Wheelchair Accessible", "Hearing Loop", "Emergency Exits"],
+                            catering: ["Coffee Station", "Water Dispenser", "Catering Setup Area"],
+                            lighting: ["Dimmable LED", "Natural Light", "Presentation Mode"],
+                            climate: ["Individual AC Control", "Air Purifier"]
+                        },
+                        roomType: "Large Conference Hall",
+                        floorSpace: "2500 sq ft",
                         problems: []
                     },
                     {
@@ -119,6 +130,16 @@ const buildingsData = [
                         capacity: 12,
                         status: "occupied",
                         equipment: ["TV Screen", "Conference Phone", "Whiteboard"],
+                        amenities: {
+                            audioVisual: ["55-inch 4K Display", "Conference Speakerphone", "Wireless Presentation"],
+                            furniture: ["Ergonomic Chairs (12)", "Oval Conference Table", "Storage Cabinet"],
+                            technology: ["WiFi 6", "HDMI Ports", "USB Charging", "Room Booking Display"],
+                            accessibility: ["Wheelchair Accessible"],
+                            lighting: ["LED Panel Lighting", "Dimmer Controls"],
+                            climate: ["Centralized AC", "Temperature Control"]
+                        },
+                        roomType: "Medium Meeting Room",
+                        floorSpace: "400 sq ft",
                         problems: []
                     },
                     {
@@ -127,6 +148,16 @@ const buildingsData = [
                         capacity: 8,
                         status: "available",
                         equipment: ["Smart TV", "Video Conference"],
+                        amenities: {
+                            audioVisual: ["65-inch Smart TV", "Built-in Camera", "Noise Cancellation"],
+                            furniture: ["Comfortable Chairs (8)", "Round Table", "Whiteboard on Wheels"],
+                            technology: ["WiFi 6", "Wireless Screen Sharing", "Power Outlets"],
+                            accessibility: ["Step-free Access"],
+                            lighting: ["Natural Light", "Adjustable Blinds"],
+                            climate: ["Individual AC Unit"]
+                        },
+                        roomType: "Small Meeting Room",
+                        floorSpace: "250 sq ft",
                         problems: []
                     },
                     {
@@ -135,6 +166,15 @@ const buildingsData = [
                         capacity: 4,
                         status: "available",
                         equipment: ["Reception Counter", "Visitor Management System"],
+                        amenities: {
+                            technology: ["Visitor Management Kiosk", "Badge Printer", "Security Camera", "Intercom System"],
+                            furniture: ["Reception Desk", "Waiting Chairs", "Magazine Rack", "Coat Rack"],
+                            accessibility: ["Wheelchair Accessible Counter", "Low-Height Section"],
+                            lighting: ["Bright LED", "Welcome Display"],
+                            security: ["Access Control", "Emergency Button"]
+                        },
+                        roomType: "Reception Area",
+                        floorSpace: "200 sq ft",
                         problems: []
                     },
                     {
@@ -143,6 +183,17 @@ const buildingsData = [
                         capacity: 200,
                         status: "available",
                         equipment: ["Kitchen", "Dining Tables", "Coffee Machines", "Vending Machines"],
+                        amenities: {
+                            dining: ["Seating for 200", "High Tables", "Regular Tables", "Outdoor Seating"],
+                            kitchen: ["Full Commercial Kitchen", "Microwave Stations", "Refrigerators"],
+                            beverages: ["Espresso Machine", "Coffee Stations", "Tea Station", "Juice Dispensers"],
+                            technology: ["Free WiFi", "Charging Stations", "Digital Menu Boards"],
+                            accessibility: ["Wheelchair Accessible", "Accessible Restrooms"],
+                            entertainment: ["Large TV Screens", "Background Music System"],
+                            climate: ["Central AC", "Exhaust System"]
+                        },
+                        roomType: "Cafeteria",
+                        floorSpace: "3000 sq ft",
                         problems: []
                     },
                     {
@@ -151,6 +202,16 @@ const buildingsData = [
                         capacity: 4,
                         status: "available",
                         equipment: ["Smart Display", "Wireless Sharing"],
+                        amenities: {
+                            audioVisual: ["32-inch Touch Display", "Built-in Speakers", "Wireless HDMI"],
+                            furniture: ["Standing Table", "Bar Stools (4)", "Mobile Whiteboard"],
+                            technology: ["WiFi 6", "USB-C Hub", "Quick Connect"],
+                            lighting: ["Bright LED", "Motion Sensor"],
+                            climate: ["Ventilation System"],
+                            style: ["Modern Design", "Glass Walls", "Colorful Decor"]
+                        },
+                        roomType: "Huddle Space",
+                        floorSpace: "80 sq ft",
                         problems: []
                     },
                     {
@@ -159,6 +220,16 @@ const buildingsData = [
                         capacity: 1,
                         status: "available",
                         equipment: ["Soundproofing", "Phone", "Small Desk"],
+                        amenities: {
+                            acoustic: ["Sound Insulation", "Noise Cancellation", "Quiet Ventilation"],
+                            furniture: ["Adjustable Stool", "Compact Desk", "Personal Shelf"],
+                            technology: ["WiFi", "USB Charging", "Desk Lamp"],
+                            lighting: ["LED Task Light", "Ambient Lighting"],
+                            privacy: ["Frosted Glass", "Lockable Door"],
+                            climate: ["Personal Ventilation"]
+                        },
+                        roomType: "Phone Booth",
+                        floorSpace: "25 sq ft",
                         problems: []
                     },
                     {
@@ -167,6 +238,16 @@ const buildingsData = [
                         capacity: 1,
                         status: "occupied",
                         equipment: ["Soundproofing", "Phone", "Small Desk"],
+                        amenities: {
+                            acoustic: ["Sound Insulation", "Noise Cancellation", "Quiet Ventilation"],
+                            furniture: ["Adjustable Stool", "Compact Desk", "Personal Shelf"],
+                            technology: ["WiFi", "USB Charging", "Desk Lamp"],
+                            lighting: ["LED Task Light", "Ambient Lighting"],
+                            privacy: ["Frosted Glass", "Lockable Door"],
+                            climate: ["Personal Ventilation"]
+                        },
+                        roomType: "Phone Booth",
+                        floorSpace: "25 sq ft",
                         problems: []
                     }
                 ]
@@ -183,6 +264,18 @@ const buildingsData = [
                         capacity: 20,
                         status: "available",
                         equipment: ["Projector", "Video Conference", "Whiteboard"],
+                        amenities: {
+                            audioVisual: ["Laser Projector 4K", "Surround Sound", "PTZ Camera", "Wireless Mics"],
+                            furniture: ["Executive Chairs (20)", "Mahogany Conference Table", "Credenza", "Plants"],
+                            technology: ["WiFi 6E", "Presentation Remote", "Room Control Tablet", "Digital Signage"],
+                            accessibility: ["Wheelchair Accessible", "Adjustable Table Height"],
+                            catering: ["Sideboard", "Water Station", "Coffee Service"],
+                            lighting: ["Smart LED", "Daylight Harvesting", "Presentation Modes"],
+                            climate: ["Dual Zone AC", "Air Quality Monitor"],
+                            privacy: ["Acoustic Panels", "Soundproof Glass"]
+                        },
+                        roomType: "Executive Conference Room",
+                        floorSpace: "600 sq ft",
                         problems: []
                     },
                     {
@@ -191,6 +284,17 @@ const buildingsData = [
                         capacity: 15,
                         status: "available",
                         equipment: ["Smart TV", "Conference Phone", "Digital Whiteboard"],
+                        amenities: {
+                            audioVisual: ["85-inch Interactive Display", "360° Camera", "Advanced Speakerphone"],
+                            furniture: ["Premium Chairs (15)", "Glass Conference Table", "Mobile Storage"],
+                            technology: ["WiFi 6E", "Wireless Charging Pads", "Smart Whiteboard", "Tablet Control"],
+                            accessibility: ["Step-free Access", "Height Adjustable Elements"],
+                            lighting: ["Tunable LED", "Automated Blinds", "Ambient Lighting"],
+                            climate: ["Individual Climate Control", "Fresh Air System"],
+                            collaboration: ["Digital Annotation", "Cloud Integration", "Multi-device Sharing"]
+                        },
+                        roomType: "Smart Meeting Room",
+                        floorSpace: "450 sq ft",
                         problems: []
                     },
                     {
@@ -199,6 +303,17 @@ const buildingsData = [
                         capacity: 25,
                         status: "available",
                         equipment: ["High-Performance Workstations", "AI Hardware", "Multiple Monitors"],
+                        amenities: {
+                            technology: ["NVIDIA GPU Cluster", "Quantum Computing Access", "High-Speed Networking", "Cloud Integration"],
+                            workstations: ["AI Development Rigs", "Dual 32-inch Monitors", "Mechanical Keyboards", "High-End Mice"],
+                            furniture: ["Ergonomic Workstations (25)", "Collaboration Islands", "Whiteboards", "Storage Lockers"],
+                            infrastructure: ["High-Power Electrical", "Cooling Systems", "UPS Backup"],
+                            accessibility: ["Adjustable Desks", "Ergonomic Support"],
+                            collaboration: ["Large Display Walls", "Brainstorming Areas", "Presentation Space"],
+                            security: ["Secure Access", "Data Protection", "Monitoring Systems"]
+                        },
+                        roomType: "Innovation Laboratory",
+                        floorSpace: "1200 sq ft",
                         problems: []
                     },
                     {
@@ -207,6 +322,17 @@ const buildingsData = [
                         capacity: 16,
                         status: "available",
                         equipment: ["4K Video Wall", "Premium Audio", "Catering Setup"],
+                        amenities: {
+                            audioVisual: ["98-inch Video Wall", "Dolby Atmos Sound", "Professional Cameras", "Lighting Control"],
+                            furniture: ["Leather Executive Chairs (16)", "Solid Wood Table", "Sideboard", "Art Pieces"],
+                            technology: ["Integrated Controls", "Video Conferencing", "Presentation Systems", "Secure Communications"],
+                            catering: ["Built-in Catering Station", "Refrigerated Storage", "China Service", "Glassware"],
+                            accessibility: ["Full Accessibility", "Emergency Features"],
+                            luxury: ["Premium Materials", "Designer Lighting", "Climate Zones", "Sound Masking"],
+                            security: ["Biometric Access", "Privacy Glass", "Secure Networks"]
+                        },
+                        roomType: "Executive Boardroom",
+                        floorSpace: "800 sq ft",
                         problems: []
                     },
                     {
@@ -215,6 +341,17 @@ const buildingsData = [
                         capacity: 8,
                         status: "maintenance",
                         equipment: ["Meditation Cushions", "Yoga Mats", "Relaxation Lighting"],
+                        amenities: {
+                            wellness: ["Meditation Corner", "Yoga Space", "Relaxation Pods", "Essential Oil Diffusers"],
+                            furniture: ["Floor Cushions", "Yoga Props", "Massage Chairs", "Relaxation Loungers"],
+                            lighting: ["Circadian Lighting", "Dimmer Controls", "Color Therapy", "Natural Light"],
+                            audio: ["Sound Therapy", "White Noise", "Nature Sounds", "Meditation Music"],
+                            climate: ["Air Purification", "Temperature Control", "Humidity Management"],
+                            accessibility: ["Barrier-free Design", "Support Rails"],
+                            privacy: ["Quiet Space", "Do Not Disturb Systems"]
+                        },
+                        roomType: "Wellness Space",
+                        floorSpace: "300 sq ft",
                         problems: [
                             {
                                 type: "Climate",
