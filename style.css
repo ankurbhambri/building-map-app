@@ -1301,8 +1301,9 @@ main {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 20000;
+    z-index: 50000; /* Very high z-index to ensure visibility */
     pointer-events: none;
+    width: 350px;
 }
 
 .notification {
@@ -1310,12 +1311,13 @@ main {
     border-radius: 8px;
     padding: 15px 20px;
     margin-bottom: 10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25); /* More prominent shadow */
     border-left: 4px solid #27ae60;
     max-width: 350px;
     pointer-events: auto;
     animation: slideIn 0.3s ease;
     position: relative;
+    border: 1px solid #ddd; /* Add border for better visibility */
 }
 
 .notification.success {

@@ -42,6 +42,9 @@ class BuildingMapApp {
         this.updateRegionStats();
         this.initNotificationSystem();
         this.updateUserUI(); // Initialize user interface
+        
+        // Trigger demo popup notifications for demonstration
+        this.triggerDemoNotifications();
     }
     
     initMap() {
@@ -1316,6 +1319,13 @@ class BuildingMapApp {
         this.updateNotificationBadge();
         this.updateUserBadgeNotification();
         
+        // Show popup notification for bulk acknowledgment
+        this.showNotification(
+            'success',
+            'Bulk Tasks Acknowledged',
+            `Sarah Chen acknowledged ${selectedRoomDetails.length} maintenance tasks. All tasks added to dispatch queue.`
+        );
+        
         // Close acknowledgment modal
         this.closeModal(document.getElementById('bulkAcknowledgmentModal'));
         
@@ -1435,6 +1445,9 @@ class BuildingMapApp {
                             };
                             
                             this.maintenanceNotifications.unshift(maintenanceAlert);
+                            
+                            // Show popup notification for new maintenance alert
+                            this.showMaintenanceAlert(maintenanceAlert);
                         }
                     }
                 });
@@ -1792,6 +1805,13 @@ class BuildingMapApp {
         this.updateNotificationBadge();
         this.updateUserBadgeNotification();
         
+        // Show popup notification for acknowledgment
+        this.showNotification(
+            'success',
+            'Task Acknowledged',
+            `Sarah Chen acknowledged maintenance task for ${room.name}. Task has been added to dispatch queue.`
+        );
+        
         // Update the button state
         const dispatchButton = document.getElementById('dispatchEngineerBtn');
         if (dispatchButton) {
@@ -2049,7 +2069,13 @@ class BuildingMapApp {
     }
     
     showNotification(type, title, message) {
+        console.log(`🔔 Showing notification: ${type} - ${title} - ${message}`);
         const container = document.getElementById('notificationContainer');
+        if (!container) {
+            console.error('❌ Notification container not found!');
+            return;
+        }
+        
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         
@@ -2069,6 +2095,7 @@ class BuildingMapApp {
         `;
         
         container.appendChild(notification);
+        console.log(`✅ Notification added to DOM. Container has ${container.children.length} notifications.`);
         
         // Auto-remove after 8 seconds
         setTimeout(() => {
@@ -2078,6 +2105,45 @@ class BuildingMapApp {
             }
         }, 8000);
     }
+    
+    // Method to trigger demo popup notifications
+    triggerDemoNotifications() {
+        console.log('🚀 Starting demo notifications sequence...');
+        
+        // Show immediate welcome notification
+        this.showNotification(
+            'success',
+            'System Ready',
+            `Welcome ${this.currentUser.name}! Building management system is operational. Demo notifications enabled.`
+        );
+        
+        // Trigger a warning notification after 3 seconds
+        setTimeout(() => {
+            this.showNotification(
+                'warning',
+                'Maintenance Alert',
+                'Conference Room A requires immediate attention. HVAC system malfunction detected. Click the notification bell to manage alerts.'
+            );
+        }, 3000);
+        
+        // Trigger a success notification after 6 seconds
+        setTimeout(() => {
+            this.showNotification(
+                'success',
+                'Task Completed',
+                'Engineering team has successfully resolved the maintenance issue in Meeting Room B. System is now operational.'
+            );
+        }, 6000);
+        
+        // Trigger another warning notification after 9 seconds
+        setTimeout(() => {
+            this.showNotification(
+                'warning',
+                'New Maintenance Request',
+                'Boardroom requires maintenance. Network connectivity issues reported. Immediate dispatch recommended.'
+            );
+        }, 9000);
+    }
 }
 
 // Initialize the application when the page loads
@@ -2085,6 +2151,7 @@ let app;
 
 document.addEventListener('DOMContentLoaded', function() {
     app = new BuildingMapApp();
+    window.buildingMapApp = app; // Make globally accessible for testing
     
     // Optional: Highlight buildings with problems after a short delay
     setTimeout(() => {
