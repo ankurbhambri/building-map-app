@@ -1377,6 +1377,14 @@ class BuildingMapApp {
         const stored = localStorage.getItem('maintenanceNotifications');
         this.maintenanceNotifications = stored ? JSON.parse(stored) : [];
         
+        // Fix any notifications missing urgency property
+        this.maintenanceNotifications = this.maintenanceNotifications.map(notification => {
+            if (!notification.urgency) {
+                notification.urgency = 'Medium'; // Default urgency
+            }
+            return notification;
+        });
+        
         // Clean up old notifications (older than 7 days)
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -1404,7 +1412,7 @@ class BuildingMapApp {
                 `Engineer dispatched to ${dispatchData.roomName} in ${dispatchData.buildingName}. Issue: ${dispatchData.category}`,
             building: dispatchData.type === 'bulk' ? dispatchData.rooms[0].building : dispatchData.buildingName,
             room: dispatchData.type === 'bulk' ? `${dispatchData.totalRooms} rooms` : dispatchData.roomName,
-            urgency: dispatchData.urgency,
+            urgency: dispatchData.urgency || 'Medium', // Default to 'Medium' if urgency is undefined
             category: dispatchData.category,
             createdAt: new Date().toISOString(),
             isRead: false,
@@ -1518,68 +1526,121 @@ class BuildingMapApp {
     }
     
     toggleNotificationPanel() {
-        let panel = document.getElementById('notificationPanel');
-        
-        if (panel) {
-            // Toggle existing panel
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-        } else {
-            // Create new panel
-            this.createNotificationPanel();
+        try {
+            console.log('🔔 Toggle notification panel called');
+            let panel = document.getElementById('notificationPanel');
+            
+            if (panel) {
+                // Toggle existing panel
+                const currentDisplay = window.getComputedStyle(panel).display;
+                const isVisible = currentDisplay !== 'none';
+                panel.style.display = isVisible ? 'none' : 'block';
+                console.log(`📋 Panel toggled. Was ${isVisible ? 'visible' : 'hidden'}, now ${isVisible ? 'hidden' : 'visible'}`);
+                
+                if (!isVisible) {
+                    // Mark as read when opening
+                    setTimeout(() => this.markAllAsRead(), 100);
+                }
+            } else {
+                // Create new panel
+                console.log('📋 Creating new notification panel');
+                this.createNotificationPanel();
+                // Mark as read after creating
+                setTimeout(() => this.markAllAsRead(), 100);
+            }
+        } catch (error) {
+            console.error('❌ Error in toggleNotificationPanel:', error);
+            // Try to show a simple alert as fallback
+            alert('Error opening notification panel. Please check browser console for details.');
         }
-        
-        // Mark all notifications as read when panel is opened
-        this.markAllAsRead();
     }
     
     createNotificationPanel() {
-        const panelHTML = `
-            <div id="notificationPanel" class="notification-panel">
-                <div class="notification-panel-header">
-                    <h3>🔔 Maintenance Alerts</h3>
-                    <div class="panel-actions">
-                        <button class="btn-text" onclick="app.markAllAsRead()">Mark All Read</button>
-                        <button class="btn-text" onclick="app.clearAllNotifications()">Clear All</button>
-                        <button class="panel-close" onclick="app.closeNotificationPanel()">×</button>
+        try {
+            console.log('📋 Creating notification panel...');
+            const panelHTML = `
+                <div id="notificationPanel" class="notification-panel" style="display: block;">
+                    <div class="notification-panel-header">
+                        <h3>🔔 Maintenance Alerts</h3>
+                        <div class="panel-actions">
+                            <button class="btn-text" onclick="window.app && window.app.markAllAsRead()">Mark All Read</button>
+                            <button class="btn-text" onclick="window.app && window.app.clearAllNotifications()">Clear All</button>
+                            <button class="panel-close" onclick="window.app && window.app.closeNotificationPanel()">×</button>
+                        </div>
+                    </div>
+                    <div class="notification-panel-content">
+                        ${this.renderNotificationList()}
                     </div>
                 </div>
-                <div class="notification-panel-content">
-                    ${this.renderNotificationList()}
+            `;
+            
+            // Remove any existing panel first
+            const existingPanel = document.getElementById('notificationPanel');
+            if (existingPanel) {
+                existingPanel.remove();
+            }
+            
+            document.body.insertAdjacentHTML('beforeend', panelHTML);
+            console.log('✅ Notification panel created successfully');
+            
+            // Close panel when clicking outside
+            document.addEventListener('click', this.handleOutsideClick.bind(this));
+        } catch (error) {
+            console.error('❌ Error creating notification panel:', error);
+            // Create a simple fallback panel
+            const fallbackHTML = `
+                <div id="notificationPanel" class="notification-panel" style="display: block; padding: 20px;">
+                    <h3>🔔 Maintenance Alerts</h3>
+                    <p>Error loading notifications. Please refresh the page.</p>
+                    <button onclick="document.getElementById('notificationPanel').remove()">Close</button>
                 </div>
-            </div>
-        `;
-        
-        document.body.insertAdjacentHTML('beforeend', panelHTML);
-        
-        // Close panel when clicking outside
-        document.addEventListener('click', this.handleOutsideClick.bind(this));
+            `;
+            document.body.insertAdjacentHTML('beforeend', fallbackHTML);
+        }
     }
     
     renderNotificationList() {
-        if (this.maintenanceNotifications.length === 0) {
-            return '<div class="no-notifications">No maintenance alerts</div>';
+        try {
+            console.log('📋 Rendering notification list. Total notifications:', this.maintenanceNotifications.length);
+            
+            if (this.maintenanceNotifications.length === 0) {
+                return '<div class="no-notifications">No maintenance alerts</div>';
+            }
+            
+            const filteredNotifications = this.maintenanceNotifications.filter(notif => !notif.isDismissed);
+            console.log('📋 Filtered notifications (not dismissed):', filteredNotifications.length);
+            
+            return filteredNotifications
+                .map((notification, index) => {
+                    console.log(`📋 Processing notification ${index + 1}:`, {
+                        id: notification.id,
+                        title: notification.title,
+                        urgency: notification.urgency
+                    });
+                    
+                    return `
+                        <div class="notification-item ${notification.isRead ? 'read' : 'unread'}" 
+                             data-notification-id="${notification.id}">
+                            <div class="notification-header">
+                                <div class="notification-title">${notification.title || 'Untitled'}</div>
+                                <div class="notification-urgency urgency-${(notification.urgency || 'medium').toLowerCase()}">${notification.urgency || 'Medium'}</div>
+                                <button class="notification-dismiss" onclick="window.app && window.app.dismissNotification('${notification.id}')">×</button>
+                            </div>
+                            <div class="notification-message">${notification.message || 'No message'}</div>
+                            <div class="notification-meta">
+                                <span class="notification-time">${this.formatNotificationTime(notification.createdAt)}</span>
+                                <span class="notification-location">📍 ${notification.building || 'Unknown'}</span>
+                            </div>
+                            <div class="notification-actions">
+                                ${this.renderNotificationActions(notification)}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+        } catch (error) {
+            console.error('❌ Error in renderNotificationList:', error);
+            return '<div class="no-notifications">Error loading notifications. Please refresh the page.</div>';
         }
-        
-        return this.maintenanceNotifications
-            .filter(notif => !notif.isDismissed)
-            .map(notification => `
-                <div class="notification-item ${notification.isRead ? 'read' : 'unread'}" 
-                     data-notification-id="${notification.id}">
-                    <div class="notification-header">
-                        <div class="notification-title">${notification.title}</div>
-                        <div class="notification-urgency urgency-${notification.urgency.toLowerCase()}">${notification.urgency}</div>
-                        <button class="notification-dismiss" onclick="app.dismissNotification('${notification.id}')">×</button>
-                    </div>
-                    <div class="notification-message">${notification.message}</div>
-                    <div class="notification-meta">
-                        <span class="notification-time">${this.formatNotificationTime(notification.createdAt)}</span>
-                        <span class="notification-location">📍 ${notification.building}</span>
-                    </div>
-                    <div class="notification-actions">
-                        ${this.renderNotificationActions(notification)}
-                    </div>
-                </div>
-            `).join('');
     }
     
     renderNotificationActions(notification) {
