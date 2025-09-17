@@ -51,10 +51,62 @@ header h1 {
     gap: 15px;
 }
 
+/* User Profile Styles */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: white;
+    margin: 0;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 2px 0 0 0;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.switch-user-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.switch-user-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
 .ab-logo-container {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .ab-logo {
@@ -407,6 +459,142 @@ main {
 .close:focus {
     color: #000;
     text-decoration: none;
+}
+
+/* User Switcher Modal Styles */
+.user-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-option {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    position: relative;
+}
+
+.user-option:hover {
+    border-color: #3498db;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+    transform: translateY(-2px);
+}
+
+.user-option.active {
+    border-color: #3498db;
+    background: #f8fcff;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: white;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.user-option:first-child .user-avatar {
+    background: linear-gradient(45deg, #3498db, #e74c3c);
+}
+
+.user-option:last-child .user-avatar {
+    background: linear-gradient(45deg, #27ae60, #f39c12);
+}
+
+.user-details {
+    flex: 1;
+}
+
+.user-details .user-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.user-details .user-role {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+}
+
+.user-description {
+    font-size: 0.8rem;
+    color: #95a5a6;
+    line-height: 1.4;
+}
+
+.current-indicator {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #27ae60;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Badge Notifications */
+.badge-notification {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Success Notification Animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.success-notification {
+    animation: slideInRight 0.3s ease-out;
 }
 
 /* Building Modal Styles */
@@ -808,6 +996,20 @@ main {
     
     .header-right {
         order: 3;
+        gap: 10px;
+    }
+    
+    /* Mobile user profile adjustments */
+    .user-info {
+        display: none;
+    }
+    
+    .user-profile {
+        gap: 0.5rem;
+    }
+    
+    .switch-user-btn {
+        padding: 0.4rem;
     }
     
     .ab-logo {
@@ -1482,6 +1684,139 @@ main {
     font-style: italic;
 }
 
+/* Bulk Acknowledgment Modal Styles */
+.bulk-ack-summary {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #dee2e6;
+}
+
+.bulk-ack-summary h3 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.bulk-ack-rooms {
+    margin-bottom: 1.5rem;
+}
+
+.bulk-ack-rooms h4 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+    font-size: 1rem;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.bulk-room-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    transition: all 0.3s ease;
+}
+
+.bulk-room-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+.bulk-room-item.already-assigned {
+    background: #f8fff8;
+    border-color: #27ae60;
+    opacity: 0.8;
+}
+
+.room-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.room-info strong {
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+.room-building {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.assigned-badge {
+    background: #27ae60;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+    display: inline-block;
+}
+
+.room-problems {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.problem-tag {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.problem-tag.high {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.problem-tag.medium {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.problem-tag.low {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.bulk-ack-note {
+    background: #e3f2fd;
+    border: 1px solid #2196f3;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.bulk-ack-note.completed {
+    background: #e8f5e8;
+    border-color: #27ae60;
+}
+
+.bulk-ack-note p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #495057;
+    font-style: italic;
+}
+
 /* Notification Bell Styles */
 .notification-bell {
     position: relative;
@@ -1783,6 +2118,34 @@ main {
 
 /* Mobile Responsive for New Features */
 @media (max-width: 768px) {
+    /* Mobile user switcher adjustments */
+    .user-selector {
+        gap: 0.75rem;
+    }
+    
+    .user-option {
+        padding: 0.75rem;
+    }
+    
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin-right: 0.75rem;
+    }
+    
+    .user-details .user-name {
+        font-size: 0.9rem;
+    }
+    
+    .user-details .user-role {
+        font-size: 0.8rem;
+    }
+    
+    .user-description {
+        font-size: 0.75rem;
+    }
+    
     .notification-panel {
         width: calc(100vw - 20px);
         right: 10px;

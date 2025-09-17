@@ -21,8 +21,21 @@
             </div>
             <h1>Meeting Room Management</h1>
             <div class="header-right">
+                <div class="user-profile">
+                    <div class="user-info">
+                        <span class="user-name" id="currentUserName">ITSM Admin</span>
+                        <span class="user-role" id="currentUserRole">IT Service Management</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="switch-user-btn" onclick="app.showUserSwitcher()" title="Switch User">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 17v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-9a2 2 0 012-2h2m3.5 6L16 12m0 0l-5.5-4M16 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
                 <div class="ab-logo-container">
-                    <div class="ab-logo">AB</div>
+                    <div class="ab-logo" id="userAvatar">AB</div>
                 </div>
             </div>
         </header>
@@ -259,6 +272,38 @@
         
         <!-- Notification Container -->
         <div id="notificationContainer"></div>
+        
+        <!-- User Switcher Modal -->
+        <div id="userSwitcherModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Switch User</h3>
+                    <span class="close" onclick="app.closeUserSwitcher()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="user-selector">
+                        <div class="user-option" onclick="app.switchToUser('itsm')">
+                            <div class="user-avatar">AB</div>
+                            <div class="user-details">
+                                <div class="user-name">ITSM Admin</div>
+                                <div class="user-role">IT Service Management</div>
+                                <div class="user-description">Manage maintenance issues and room assignments</div>
+                            </div>
+                            <div class="current-indicator" id="itsmIndicator">Current</div>
+                        </div>
+                        <div class="user-option" onclick="app.switchToUser('dispatch')">
+                            <div class="user-avatar">SC</div>
+                            <div class="user-details">
+                                <div class="user-name">Sarah Chen</div>
+                                <div class="user-role">Dispatch Agent</div>
+                                <div class="user-description">Review and acknowledge assigned maintenance tasks</div>
+                            </div>
+                            <div class="current-indicator" id="dispatchIndicator" style="display: none;">Current</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- Microsoft Copilot Assistant -->
         <div id="copilotAssistant" class="copilot-assistant">

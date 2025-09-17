@@ -14,6 +14,24 @@ class BuildingMapApp {
         this.bulkSelectionMode = false; // Toggle for bulk selection interface
         this.maintenanceNotifications = []; // Store maintenance notifications
         
+        // User management
+        this.currentUser = 'itsm'; // Default user: 'itsm' or 'dispatch'
+        this.users = {
+            itsm: {
+                name: 'ITSM Admin',
+                role: 'IT Service Management',
+                avatar: 'AB',
+                description: 'Manage maintenance issues and room assignments'
+            },
+            dispatch: {
+                name: 'Sarah Chen',
+                role: 'Dispatch Agent',
+                avatar: 'SC',
+                description: 'Review and acknowledge assigned maintenance tasks'
+            }
+        };
+        this.assignedRooms = new Set(); // Track rooms assigned to dispatch agent
+        
         this.init();
     }
     
@@ -23,6 +41,7 @@ class BuildingMapApp {
         this.loadRegion(this.currentRegion);
         this.updateRegionStats();
         this.initNotificationSystem();
+        this.updateUserUI(); // Initialize user interface
     }
     
     initMap() {
@@ -508,6 +527,23 @@ class BuildingMapApp {
         const dispatchSection = document.getElementById('dispatchSection');
         if (room.status === 'maintenance' && room.problems && room.problems.length > 0) {
             dispatchSection.style.display = 'block';
+            
+            // Update button text and behavior based on current user
+            const dispatchButton = document.getElementById('dispatchEngineerBtn');
+            if (this.currentUser === 'dispatch') {
+                // Check if room is already assigned
+                const isAssigned = this.assignedRooms.has(room.id);
+                dispatchButton.innerHTML = isAssigned ? '✅ Acknowledged' : '✅ I Acknowledge';
+                dispatchButton.onclick = () => this.acknowledgeTask(room);
+                dispatchButton.disabled = isAssigned;
+                dispatchButton.style.opacity = isAssigned ? '0.6' : '1';
+            } else {
+                // ITSM user
+                dispatchButton.innerHTML = '🔧 Dispatch Engineer';
+                dispatchButton.onclick = () => this.showDispatchModal(room);
+                dispatchButton.disabled = false;
+                dispatchButton.style.opacity = '1';
+            }
         } else {
             dispatchSection.style.display = 'none';
         }
@@ -626,8 +662,16 @@ class BuildingMapApp {
         const bulkDispatchBtn = document.getElementById('bulkDispatchBtn');
         if (bulkDispatchBtn) {
             const selectedCount = this.selectedRooms.size;
-            bulkDispatchBtn.textContent = `🔧 Dispatch to Selected (${selectedCount})`;
-            bulkDispatchBtn.disabled = selectedCount === 0;
+            
+            if (this.currentUser === 'dispatch') {
+                const unacknowledgedCount = Array.from(this.selectedRooms)
+                    .filter(roomId => !this.assignedRooms.has(roomId)).length;
+                bulkDispatchBtn.textContent = `✅ Acknowledge Selected (${unacknowledgedCount})`;
+                bulkDispatchBtn.disabled = unacknowledgedCount === 0;
+            } else {
+                bulkDispatchBtn.textContent = `🔧 Dispatch to Selected (${selectedCount})`;
+                bulkDispatchBtn.disabled = selectedCount === 0;
+            }
         }
     }
     
@@ -716,9 +760,14 @@ class BuildingMapApp {
         // Aggregate problem data
         const problemSummary = this.aggregateProblems(selectedRoomDetails);
         
-        // Create and show bulk dispatch modal
-        this.createBulkDispatchModal(selectedRoomDetails, problemSummary);
-        this.showModal('bulkDispatchModal');
+        // For dispatch agent, show bulk acknowledgment modal instead
+        if (this.currentUser === 'dispatch') {
+            this.showBulkAcknowledgmentModal(selectedRoomDetails, problemSummary);
+        } else {
+            // Create and show bulk dispatch modal for ITSM
+            this.createBulkDispatchModal(selectedRoomDetails, problemSummary);
+            this.showModal('bulkDispatchModal');
+        }
     }
     
     aggregateProblems(rooms) {
@@ -1137,6 +1186,152 @@ class BuildingMapApp {
         console.log('Bulk Dispatch Request Created:', bulkDispatchRequest);
     }
     
+    // Bulk Acknowledgment Modal (for Dispatch Agent)
+    showBulkAcknowledgmentModal(rooms, problemSummary) {
+        this.createBulkAcknowledgmentModal(rooms, problemSummary);
+        this.showModal('bulkAcknowledgmentModal');
+    }
+    
+    createBulkAcknowledgmentModal(rooms, problemSummary) {
+        // Remove existing acknowledgment modal if any
+        const existingModal = document.getElementById('bulkAcknowledgmentModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        const roomsList = rooms.map(room => {
+            const problems = room.problems || [];
+            const isAlreadyAssigned = this.assignedRooms.has(room.id);
+            
+            return `
+                <div class="bulk-room-item ${isAlreadyAssigned ? 'already-assigned' : ''}">
+                    <div class="room-info">
+                        <strong>${room.name}</strong>
+                        <span class="room-building">${room.building || this.currentBuilding.name}</span>
+                        ${isAlreadyAssigned ? '<span class="assigned-badge">✅ Acknowledged</span>' : ''}
+                    </div>
+                    <div class="room-problems">
+                        ${problems.map(problem => `
+                            <div class="problem-tag ${problem.priority}">${problem.type}</div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        const unassignedRooms = rooms.filter(room => !this.assignedRooms.has(room.id));
+        const canAcknowledge = unassignedRooms.length > 0;
+        
+        const modalHTML = `
+            <div id="bulkAcknowledgmentModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>🔔 Bulk Task Acknowledgment</h2>
+                        <span class="close" onclick="app.closeModal(document.getElementById('bulkAcknowledgmentModal'))">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="bulk-ack-summary">
+                            <div class="summary-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">${rooms.length}</span>
+                                    <span class="stat-label">Selected Rooms</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">${unassignedRooms.length}</span>
+                                    <span class="stat-label">Pending Tasks</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">${problemSummary.totalProblems}</span>
+                                    <span class="stat-label">Total Issues</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bulk-ack-rooms">
+                            <h4>Room Assignments</h4>
+                            <div class="room-list">
+                                ${roomsList}
+                            </div>
+                        </div>
+                        
+                        ${canAcknowledge ? `
+                            <div class="bulk-ack-note">
+                                <p><strong>Acknowledgment Confirmation:</strong> By acknowledging these tasks, you confirm receipt and will begin maintenance work as scheduled.</p>
+                            </div>
+                        ` : `
+                            <div class="bulk-ack-note completed">
+                                <p><strong>✅ All Selected Tasks Acknowledged:</strong> All maintenance tasks in this selection have been acknowledged.</p>
+                            </div>
+                        `}
+                        
+                        <div class="form-actions">
+                            <button class="btn-secondary" onclick="app.closeModal(document.getElementById('bulkAcknowledgmentModal'))">Cancel</button>
+                            <button class="btn-primary" 
+                                    onclick="app.confirmBulkAcknowledgment()" 
+                                    ${!canAcknowledge ? 'disabled style="opacity: 0.6;"' : ''}>
+                                ${canAcknowledge ? `✅ Acknowledge ${unassignedRooms.length} Tasks` : '✅ All Acknowledged'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+    
+    confirmBulkAcknowledgment() {
+        const selectedRoomDetails = Array.from(this.selectedRooms)
+            .map(roomId => this.getRoomById(roomId))
+            .filter(room => room && !this.assignedRooms.has(room.id));
+        
+        if (selectedRoomDetails.length === 0) return;
+        
+        // Add all rooms to assigned rooms
+        selectedRoomDetails.forEach(room => {
+            this.assignedRooms.add(room.id);
+        });
+        
+        // Create bulk acknowledgment notification
+        const bulkAcknowledgment = {
+            id: Date.now(),
+            type: 'bulk_acknowledgment',
+            title: 'Bulk Task Acknowledgment',
+            message: `Sarah Chen acknowledged ${selectedRoomDetails.length} maintenance tasks`,
+            rooms: selectedRoomDetails.map(room => ({
+                id: room.id,
+                name: room.name,
+                building: room.building || this.currentBuilding.name
+            })),
+            totalRooms: selectedRoomDetails.length,
+            timestamp: new Date().toLocaleString(),
+            createdAt: new Date().toISOString(),
+            priority: 'medium',
+            isRead: false,
+            isDismissed: false
+        };
+        
+        this.maintenanceNotifications.push(bulkAcknowledgment);
+        this.saveNotifications();
+        this.updateNotificationBadge();
+        this.updateUserBadgeNotification();
+        
+        // Close acknowledgment modal
+        this.closeModal(document.getElementById('bulkAcknowledgmentModal'));
+        
+        // Show success message
+        this.showSuccessMessage(`Successfully acknowledged ${selectedRoomDetails.length} maintenance tasks!`);
+        
+        // Clear selections
+        this.clearAllSelections();
+        
+        // Remove the modal from DOM
+        const modal = document.getElementById('bulkAcknowledgmentModal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+    
     // Notification System
     initNotificationSystem() {
         // Load existing notifications from localStorage
@@ -1360,14 +1555,26 @@ class BuildingMapApp {
     
     renderNotificationActions(notification) {
         if (notification.type === 'alert') {
-            return `
-                <button class="btn-small btn-primary" onclick="app.dispatchFromNotification('${notification.id}')">
-                    🔧 Dispatch Engineer
-                </button>
-                <button class="btn-small btn-secondary" onclick="app.viewRoomFromNotification('${notification.id}')">
-                    👁️ View Room
-                </button>
-            `;
+            // Show different buttons based on current user
+            if (this.currentUser === 'dispatch') {
+                return `
+                    <button class="btn-small btn-primary" onclick="app.acknowledgeFromNotification('${notification.id}')">
+                        ✅ I Acknowledge
+                    </button>
+                    <button class="btn-small btn-secondary" onclick="app.viewRoomFromNotification('${notification.id}')">
+                        👁️ View Room
+                    </button>
+                `;
+            } else {
+                return `
+                    <button class="btn-small btn-primary" onclick="app.dispatchFromNotification('${notification.id}')">
+                        🔧 Dispatch Engineer
+                    </button>
+                    <button class="btn-small btn-secondary" onclick="app.viewRoomFromNotification('${notification.id}')">
+                        👁️ View Room
+                    </button>
+                `;
+            }
         } else {
             return `
                 <button class="btn-small btn-secondary" onclick="app.viewDispatchDetails('${notification.id}')">
@@ -1450,6 +1657,184 @@ class BuildingMapApp {
         document.removeEventListener('click', this.handleOutsideClick);
     }
     
+    // User Management Methods
+    showUserSwitcher() {
+        const modal = document.getElementById('userSwitcherModal');
+        modal.style.display = 'block';
+        this.updateUserSwitcherUI();
+    }
+    
+    closeUserSwitcher() {
+        const modal = document.getElementById('userSwitcherModal');
+        modal.style.display = 'none';
+    }
+    
+    switchToUser(userType) {
+        this.currentUser = userType;
+        this.updateUserUI();
+        this.updateUserSwitcherUI();
+        this.closeUserSwitcher();
+        
+        // Update interface based on user type
+        if (userType === 'dispatch') {
+            this.updateDispatchAgentView();
+        } else {
+            this.updateITSMView();
+        }
+        
+        // Update notification badge for dispatch agent
+        this.updateUserBadgeNotification();
+        
+        // Refresh notification panel if it's open to show correct buttons
+        this.refreshNotificationPanel();
+        
+        // Update notification bell badge to ensure correct count is shown
+        this.updateNotificationBadge();
+    }
+    
+    updateUserUI() {
+        const user = this.users[this.currentUser];
+        
+        // Update header display
+        document.getElementById('currentUserName').textContent = user.name;
+        document.getElementById('currentUserRole').textContent = user.role;
+        document.getElementById('userAvatar').textContent = user.avatar;
+        
+        // Update avatar gradient based on user
+        const avatar = document.getElementById('userAvatar');
+        if (this.currentUser === 'dispatch') {
+            avatar.style.background = 'linear-gradient(45deg, #27ae60, #f39c12)';
+        } else {
+            avatar.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        }
+    }
+    
+    updateUserSwitcherUI() {
+        // Update current indicators
+        document.getElementById('itsmIndicator').style.display = 
+            this.currentUser === 'itsm' ? 'block' : 'none';
+        document.getElementById('dispatchIndicator').style.display = 
+            this.currentUser === 'dispatch' ? 'block' : 'none';
+    }
+    
+    updateDispatchAgentView() {
+        // Hide multi-selection interface for dispatch agent
+        this.exitBulkSelectionMode();
+        
+        // Update map to show assigned rooms differently
+        this.updateMapMarkersForDispatch();
+    }
+    
+    updateITSMView() {
+        // Restore normal ITSM interface
+        this.updateMapMarkersForITSM();
+    }
+    
+    updateMapMarkersForDispatch() {
+        // Re-render markers with dispatch agent perspective
+        this.loadBuildings(this.currentRegion, this.currentCampus);
+    }
+    
+    updateMapMarkersForITSM() {
+        // Re-render markers with ITSM perspective
+        this.loadBuildings(this.currentRegion, this.currentCampus);
+    }
+    
+    updateUserBadgeNotification() {
+        const avatar = document.getElementById('userAvatar');
+        let badge = avatar.querySelector('.badge-notification');
+        
+        if (this.currentUser === 'dispatch' && this.assignedRooms.size > 0) {
+            if (!badge) {
+                badge = document.createElement('div');
+                badge.className = 'badge-notification';
+                avatar.appendChild(badge);
+            }
+            badge.textContent = this.assignedRooms.size;
+        } else if (badge) {
+            badge.remove();
+        }
+    }
+    
+    refreshNotificationPanel() {
+        const panel = document.getElementById('notificationPanel');
+        if (panel) {
+            const content = panel.querySelector('.notification-panel-content');
+            if (content) {
+                content.innerHTML = this.renderNotificationList();
+            }
+        }
+    }
+    
+    // Dispatch Agent Methods
+    acknowledgeTask(room) {
+        // Add room to assigned rooms
+        this.assignedRooms.add(room.id);
+        
+        // Create acknowledgment notification
+        const acknowledgment = {
+            id: Date.now(),
+            type: 'acknowledgment',
+            title: 'Task Acknowledged',
+            message: `Sarah Chen acknowledged maintenance task for ${room.name}`,
+            room: room.name,
+            building: room.building,
+            timestamp: new Date().toLocaleString(),
+            createdAt: new Date().toISOString(),
+            priority: 'medium',
+            isRead: false,
+            isDismissed: false,
+            roomData: room
+        };
+        
+        this.maintenanceNotifications.push(acknowledgment);
+        this.saveNotifications();
+        this.updateNotificationBadge();
+        this.updateUserBadgeNotification();
+        
+        // Update the button state
+        const dispatchButton = document.getElementById('dispatchEngineerBtn');
+        if (dispatchButton) {
+            dispatchButton.innerHTML = '✅ Acknowledged';
+            dispatchButton.disabled = true;
+            dispatchButton.style.opacity = '0.6';
+        }
+        
+        // Show success message
+        this.showSuccessMessage('Task acknowledged successfully!');
+        
+        // Close modal
+        this.closeModal(document.getElementById('roomModal'));
+    }
+    
+    showSuccessMessage(message) {
+        // Create a temporary success notification
+        const notification = document.createElement('div');
+        notification.className = 'success-notification';
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            z-index: 10000;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+            animation: slideInRight 0.3s ease-out;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
     handleOutsideClick(event) {
         const panel = document.getElementById('notificationPanel');
         const notificationBtn = document.querySelector('.notification-btn');
@@ -1477,6 +1862,15 @@ class BuildingMapApp {
             this.currentBuilding = notification.buildingData;
             this.closeNotificationPanel();
             this.showRoomDetails(notification.roomData);
+        }
+    }
+    
+    acknowledgeFromNotification(notificationId) {
+        const notification = this.maintenanceNotifications.find(notif => notif.id === notificationId);
+        if (notification && notification.roomData) {
+            this.currentRoom = notification.roomData;
+            this.closeNotificationPanel();
+            this.acknowledgeTask(notification.roomData);
         }
     }
     
