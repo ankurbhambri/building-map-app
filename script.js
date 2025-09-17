@@ -193,9 +193,17 @@ class BuildingMapApp {
         // Load buildings for this region/campus
         let regionBuildings = buildingsData.filter(building => building.region === regionKey);
         
-        // Filter by campus if specified
+        // Filter by campus if specified, but include buildings without campus property when on the main campus
         if (campusKey) {
-            regionBuildings = regionBuildings.filter(building => building.campus === campusKey);
+            const campusData = regionData.campuses?.find(c => c.id === campusKey);
+            const isMainCampus = campusData && (campusData.name.includes("Main") || campusData.name.includes("Microsoft"));
+            
+            regionBuildings = regionBuildings.filter(building => 
+                // Include the building if it has a matching campus property
+                (building.campus === campusKey) || 
+                // Or if it's the main campus and the building doesn't specify a campus
+                (isMainCampus && !building.campus)
+            );
         }
         
         regionBuildings.forEach(building => {
@@ -231,7 +239,15 @@ class BuildingMapApp {
         
         // Filter by campus if one is selected
         if (this.currentCampus) {
-            regionBuildings = regionBuildings.filter(building => building.campus === this.currentCampus);
+            const regionData = regionsData[this.currentRegion];
+            const campusData = regionData.campuses?.find(c => c.id === this.currentCampus);
+            const isMainCampus = campusData && (campusData.name.includes("Main") || campusData.name.includes("Microsoft"));
+            
+            // Include buildings with matching campus property or those without campus property for main campuses
+            regionBuildings = regionBuildings.filter(building => 
+                building.campus === this.currentCampus || 
+                (isMainCampus && !building.campus)
+            );
         }
         
         let totalRooms = 0;

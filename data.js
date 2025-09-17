@@ -33,10 +33,17 @@ const regionsData = {
         description: "Microsoft India Development Center - Bangalore",
         campuses: [
             {
-                id: "bangalore-main-campus",
-                name: "Main Campus",
-                description: "Primary Microsoft Development Center",
+                id: "bangalore-prestige-ferns",
+                name: "Prestige Ferns Galaxy",
+                description: "Prestige Ferns Galaxy Building",
                 center: [12.9716, 77.5946],
+                zoom: 17
+            },
+            {
+                id: "bangalore-luxor-north",
+                name: "Microsoft Luxor North Tower",
+                description: "Microsoft Luxor North Tower Building",
+                center: [12.9698, 77.6015],
                 zoom: 17
             }
         ]
@@ -49,16 +56,16 @@ const regionsData = {
         description: "Microsoft India Development Center - Noida",
         campuses: [
             {
-                id: "noida-microsoft-campus",
-                name: "Microsoft Campus",
-                description: "Main Microsoft Development Center",
+                id: "noida-kp-towers",
+                name: "KP Towers",
+                description: "KP Towers Complex",
                 center: [28.5355, 77.3910],
                 zoom: 17
             },
             {
-                id: "noida-taj-building",
-                name: "Taj Building",
-                description: "Secondary Office Location",
+                id: "noida-sovereign",
+                name: "Noida Sovereign",
+                description: "Noida Sovereign Building",
                 center: [28.5370, 77.3920],
                 zoom: 18
             }
@@ -77,22 +84,6 @@ const regionsData = {
                 description: "Microsoft Headquarters",
                 center: [47.6397, -122.1281],
                 zoom: 16
-            }
-        ]
-    },
-    phoenix: {
-        name: "Phoenix",
-        country: "USA",
-        center: [33.4484, -112.0740],
-        zoom: 16,
-        description: "Microsoft Office - Phoenix, Arizona",
-        campuses: [
-            {
-                id: "phoenix-standalone",
-                name: "Phoenix Office",
-                description: "Standalone Microsoft Office",
-                center: [33.4484, -112.0740],
-                zoom: 17
             }
         ]
     }
@@ -299,78 +290,15 @@ const buildingsData = [
             }
         ]
     },
-    // Additional Hyderabad buildings...
-    {
-        id: 2,
-        region: "hyderabad",
-        campus: "hyderabad-microsoft-campus",
-        name: "Microsoft Hyderabad Campus - Building B2",
-        address: "Building B2, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
-        coordinates: [17.4245, 78.3875],
-        floors: [
-            {
-                id: 1,
-                name: "Ground Floor",
-                number: 0,
-                description: "Development Teams, Open Workspace",
-                rooms: [
-                    {
-                        id: 101,
-                        name: "Yamuna Conference Room",
-                        capacity: 50,
-                        status: "available",
-                        equipment: ["Large Smart TV", "Video Conference", "Sound System"],
-                        problems: []
-                    },
-                    {
-                        id: 102,
-                        name: "Saraswati Meeting Room",
-                        capacity: 8,
-                        status: "maintenance",
-                        equipment: ["TV Screen", "Conference Phone"],
-                        problems: [
-                            {
-                                type: "Equipment",
-                                description: "Video conference system not working",
-                                priority: "High",
-                                reportedAt: "2024-01-15"
-                            }
-                        ]
-                    },
-                    {
-                        id: 103,
-                        name: "Chenab Huddle Room",
-                        capacity: 4,
-                        status: "maintenance",
-                        equipment: ["Smart TV", "Wireless presentation"],
-                        problems: [
-                            {
-                                type: "Network",
-                                description: "WiFi connectivity issues",
-                                priority: "Medium",
-                                reportedAt: "2024-01-16"
-                            }
-                        ]
-                    },
-                    {
-                        id: 104,
-                        name: "Micro Kitchen",
-                        capacity: 10,
-                        status: "available",
-                        equipment: ["Coffee Machine", "Microwave", "Refrigerator", "Snack Station"],
-                        problems: []
-                    }
-                ]
-            }
-        ]
-    },
+    
 
     // BANGALORE CAMPUS
     {
         id: 11,
         region: "bangalore",
-        name: "Microsoft Bangalore - Embassy Golf Links",
-        address: "Embassy Golf Links Business Park, Intermediate Ring Road, Bangalore, Karnataka 560071, India",
+        campus: "bangalore-prestige-ferns",
+        name: "Prestige Ferns Galaxy",
+        address: "Prestige Ferns Galaxy, Bangalore, Karnataka 560071, India",
         coordinates: [12.9716, 77.5946],
         floors: [
             {
@@ -474,8 +402,9 @@ const buildingsData = [
     {
         id: 12,
         region: "bangalore",
-        name: "Microsoft Bangalore - RMZ Ecoworld",
-        address: "RMZ Ecoworld, Sarjapur Road, Bangalore, Karnataka 560103, India",
+        campus: "bangalore-luxor-north",
+        name: "Microsoft Luxor North Tower",
+        address: "Microsoft Luxor North Tower, Bangalore, Karnataka 560103, India",
         coordinates: [12.9698, 77.6015],
         floors: [
             {
@@ -524,9 +453,9 @@ const buildingsData = [
     {
         id: 21,
         region: "noida",
-        campus: "noida-microsoft-campus",
-        name: "Microsoft Noida - Advant Navis",
-        address: "Advant Navis Business Park, Sector 142, Noida, Uttar Pradesh 201305, India",
+        campus: "noida-kp-towers",
+        name: "KP Towers - North Block",
+        address: "KP Towers, North Block, Sector 142, Noida, Uttar Pradesh 201305, India",
         coordinates: [28.5355, 77.3910],
         floors: [
             {
@@ -624,6 +553,7 @@ const buildingsData = [
     {
         id: 31,
         region: "redmond",
+        campus: "redmond-main-campus",
         name: "Microsoft Building 92 - Executive Briefing Center",
         address: "1 Microsoft Way, Redmond, WA 98052, USA",
         coordinates: [47.6397, -122.1281],
@@ -748,6 +678,7 @@ const buildingsData = [
     {
         id: 32,
         region: "redmond",
+        campus: "redmond-main-campus",
         name: "Microsoft Building 25 - Research & Development",
         address: "1 Microsoft Way, Redmond, WA 98052, USA",
         coordinates: [47.6420, -122.1250],
@@ -857,6 +788,7 @@ const buildingsData = [
     {
         id: 33,
         region: "redmond",
+        campus: "redmond-main-campus",
         name: "Microsoft Building 17 - The Commons",
         address: "1 Microsoft Way, Redmond, WA 98052, USA",
         coordinates: [47.6385, -122.1295],
@@ -913,11 +845,11 @@ const buildingsData = [
     // Additional Hyderabad Campus Buildings
     {
         id: "hyderabad-b3",
-        name: "Hyderabad Building B3",
+        name: "Microsoft Hyderabad Campus - Building B3",
         region: "hyderabad",
-        campus: "hyderabad-phoenix-standalone",
-        coordinates: [17.4478, 78.3745],
-        address: "Microsoft Building B3, Financial District, Hyderabad",
+        campus: "hyderabad-microsoft-campus",
+        coordinates: [17.4245, 78.3875],
+        address: "Building B3, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
         floors: [
             {
                 id: 1,
@@ -974,11 +906,11 @@ const buildingsData = [
     },
     {
         id: "hyderabad-b4",
-        name: "Hyderabad Building B4",
+        name: "Microsoft Hyderabad Campus - Building B4",
         region: "hyderabad",
-        campus: "hyderabad-phoenix-standalone",
-        coordinates: [17.4485, 78.3755],
-        address: "Microsoft Building B4, Financial District, Hyderabad",
+        campus: "hyderabad-microsoft-campus",
+        coordinates: [17.4247, 78.3877],
+        address: "Building B4, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
         floors: [
             {
                 id: 1,
@@ -1020,10 +952,11 @@ const buildingsData = [
     },
     {
         id: "hyderabad-b5",
-        name: "Hyderabad Building B5",
+        name: "Phoenix Building",
         region: "hyderabad",
-        coordinates: [17.4490, 78.3750],
-        address: "Microsoft Building B5, Financial District, Hyderabad",
+        campus: "hyderabad-phoenix-standalone",
+        coordinates: [17.4478, 78.3745],
+        address: "Phoenix Building, Financial District, Hyderabad, Telangana 500032, India",
         floors: [
             {
                 id: 1,
@@ -1058,10 +991,11 @@ const buildingsData = [
     },
     {
         id: "hyderabad-b6",
-        name: "Hyderabad Building B6",
+        name: "Microsoft Hyderabad Campus - Building B2",
         region: "hyderabad",
-        coordinates: [17.4495, 78.3765],
-        address: "Microsoft Building B6, Financial District, Hyderabad",
+        campus: "hyderabad-microsoft-campus",
+        coordinates: [17.4243, 78.3873],
+        address: "Building B2, Microsoft India Development Center, Gachibowli, Hyderabad, Telangana 500032, India",
         floors: [
             {
                 id: 1,
@@ -1146,14 +1080,14 @@ const buildingsData = [
             }
         ]
     },
-    // Noida Taj Building - Secondary Location
+    // KP Towers - South Block
     {
-        id: "noida-taj",
-        name: "Noida Taj Building",
+        id: 22,
         region: "noida",
-        campus: "noida-taj-building",
-        coordinates: [28.5370, 77.3920],
-        address: "Taj Building, Sector 142, Noida, Uttar Pradesh",
+        campus: "noida-kp-towers",
+        name: "KP Towers - South Block",
+        address: "KP Towers, South Block, Sector 142, Noida, Uttar Pradesh 201305, India",
+        coordinates: [28.5358, 77.3915],
         floors: [
             {
                 id: 1,
@@ -1203,6 +1137,53 @@ const buildingsData = [
                                 reportedAt: "2024-01-19"
                             }
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    // Noida Sovereign Building
+    {
+        id: 23,
+        region: "noida",
+        campus: "noida-sovereign",
+        name: "Noida Sovereign Building",
+        address: "Noida Sovereign, Sector 132, Noida, Uttar Pradesh 201301, India",
+        coordinates: [28.5380, 77.3930],
+        floors: [
+            {
+                id: 1,
+                name: "Ground Floor",
+                rooms: [
+                    {
+                        id: 7001,
+                        name: "Sovereign Reception",
+                        capacity: 25,
+                        status: "available",
+                        equipment: ["Reception Desk", "Visitor Area", "Information Display"],
+                        problems: []
+                    },
+                    {
+                        id: 7002,
+                        name: "Sovereign Conference Room",
+                        capacity: 35,
+                        status: "available",
+                        equipment: ["Video Conferencing", "Large Display", "Audio System"],
+                        problems: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "Second Floor",
+                rooms: [
+                    {
+                        id: 7101,
+                        name: "Sovereign Open Office",
+                        capacity: 60,
+                        status: "available",
+                        equipment: ["Open Desks", "Collaboration Areas", "Break Room"],
+                        problems: []
                     }
                 ]
             }
